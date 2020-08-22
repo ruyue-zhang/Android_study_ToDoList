@@ -1,17 +1,20 @@
-package com.ruyue.todolist.Models;
+package com.ruyue.todolist.models;
 
-public class UserInfo {
+public class User {
     private int id;
     private String name;
     private String password;
     private Boolean LoginStatus;
 
-    public UserInfo(String name, String password) {
+    public User() {
+    }
+
+    public User(String name, String password) {
         this.name = name;
         this.password = password;
     }
 
-    public UserInfo(int id, String name, String password, Boolean loginStatus) {
+    public User(int id, String name, String password, Boolean loginStatus) {
         this.id = id;
         this.name = name;
         this.password = password;

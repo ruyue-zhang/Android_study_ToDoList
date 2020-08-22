@@ -4,6 +4,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "30.0.1"
 
+    compileOptions.encoding = "GBK"
     defaultConfig {
         applicationId "com.ruyue.todolist"
         minSdkVersion 26
