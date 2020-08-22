@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ToDoList</string>
+    <string name="todo_list_logo">todo_list_logo</string>
 </resources>
