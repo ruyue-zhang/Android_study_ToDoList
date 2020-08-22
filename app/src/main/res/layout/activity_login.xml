@@ -48,6 +48,20 @@
             tools:ignore="LabelFor,SpUsage"
             android:autofillHints="@string/password" />
 
+        <Button
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="@dimen/login_button_margin_horizontal"
+            android:layout_height="@dimen/login_button_height"
+            android:layout_marginTop="@dimen/login_button_margin_top"
+            android:text="@string/login"
+            android:textSize="@dimen/login_text_size"
+            android:textColor="@color/btn_text_color"
+            android:background="@drawable/login_btn_layout"
+            android:textAllCaps="false"
+            android:stateListAnimator="@null"
+            tools:ignore="SpUsage" />
+
     </LinearLayout>
 </layout>
 
