@@ -3,10 +3,12 @@ package com.ruyue.todolist.view;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -48,7 +50,9 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(v -> {
             String name = editTextName.getText().toString();
             String password = editTextPassword.getText().toString();
-            getUserInfo(name, password);
+            String md5Password = MD5.getMD5(password);
+            Log.d("------------------", md5Password);
+            getUserInfo(name, "e10adc3949ba59abbe56e057f20f883e");
         });
 
         judgeNameIsLegal();
@@ -145,6 +149,9 @@ public class LoginActivity extends AppCompatActivity {
         if(name.equals(ServiceUser.getName())) {
             if(!password.equals(ServiceUser.getPassword())) {
                 Toast.makeText(getApplicationContext(), "密码错误", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent  = new Intent(LoginActivity.this, MainPageActivity.class);
+                startActivity(intent);
             }
         } else {
             Toast.makeText(getApplicationContext(), "用户不存在", Toast.LENGTH_SHORT).show();
