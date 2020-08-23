@@ -3,8 +3,12 @@ package com.ruyue.todolist.view;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 
 import android.text.TextWatcher;
@@ -17,6 +21,7 @@ import com.google.gson.Gson;
 import com.ruyue.todolist.models.User;
 import com.ruyue.todolist.R;
 import com.ruyue.todolist.databinding.ActivityLoginBinding;
+import com.ruyue.todolist.models.UserDao;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +29,10 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -40,15 +48,31 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextName;
     private User ServiceUser;
     private EditText editTextPassword;
+    private UserDao userDao;
+
+    SharedPreferences sprfMain;
+    SharedPreferences.Editor editorMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        sprfMain = PreferenceManager.getDefaultSharedPreferences(this);
+        editorMain = sprfMain.edit();
+        if(sprfMain.getBoolean("main",false)) {
+            Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
+            startActivity(intent);
+            LoginActivity.this.finish();
+        }
+
         final ActivityLoginBinding activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        MyApplication myApplication = (MyApplication)getApplication();
+        userDao = myApplication.getLocalDataSource().userDao();
+
         editTextName = findViewById(R.id.name);
         editTextPassword = findViewById(R.id.password);
         loginBtn = findViewById(R.id.login);
+
 
         loginBtn.setOnClickListener(v -> {
             String name = editTextName.getText().toString();
@@ -61,7 +85,6 @@ public class LoginActivity extends AppCompatActivity {
             }
             getUserInfo(name, md5Password);
         });
-
         judgeNameIsLegal();
         judgePasswordIsLegal();
     }
@@ -140,8 +163,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 final String result = Objects.requireNonNull(response.body()).string();
                 jsonStringToUserList(result);
+                String errorInfo = judgeUser(name, password);
                 runOnUiThread(() -> {
-                    judgeUser(name, password);
+                    if(errorInfo != null) {
+                        Toast.makeText(getApplicationContext(), errorInfo, Toast.LENGTH_SHORT).show();
+                    }
                 });
             }
         });
@@ -152,22 +178,31 @@ public class LoginActivity extends AppCompatActivity {
         ServiceUser = gson.fromJson(result, User.class);
     }
 
-    public void judgeUser(String name, String password) {
+    public String judgeUser(String name, String password) {
         if(name.equals(ServiceUser.getName())) {
             if(!password.equals(ServiceUser.getPassword())) {
-                Toast.makeText(getApplicationContext(), "密码错误", Toast.LENGTH_SHORT).show();
+                return "密码错误";
             } else {
+                insertUserInRoom(new User(ServiceUser.getId(), name, password, true));
                 Intent intent  = new Intent(LoginActivity.this, MainPageActivity.class);
+                editorMain.putBoolean("main",true);
+                editorMain.commit();
                 startActivity(intent);
+                LoginActivity.this.finish();
             }
         } else {
-            Toast.makeText(getApplicationContext(), "用户不存在", Toast.LENGTH_SHORT).show();
+            return "用户不存在";
         }
+        return null;
     }
 
     public static String getMD5(String str) throws NoSuchAlgorithmException {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(str.getBytes());
             return new BigInteger(1, md.digest()).toString(16);
+    }
+
+    public void insertUserInRoom(User user) {
+        userDao.insertUser(user);
     }
 }

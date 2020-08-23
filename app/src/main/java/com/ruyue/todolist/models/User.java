@@ -1,23 +1,17 @@
 package com.ruyue.todolist.models;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class User {
+    @PrimaryKey
     private int id;
     private String name;
     private String password;
     private Boolean LoginStatus;
 
     public User() {
-    }
-
-    public User(int id, String name, String password) {
-        this.id = id;
-        this.name = name;
-        this.password = password;
-    }
-
-    public User(String name, String password) {
-        this.name = name;
-        this.password = password;
     }
 
     public User(int id, String name, String password, Boolean loginStatus) {
@@ -57,5 +51,15 @@ public class User {
 
     public void setLoginStatus(Boolean loginStatus) {
         LoginStatus = loginStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", LoginStatus=" + LoginStatus +
+                '}';
     }
 }
