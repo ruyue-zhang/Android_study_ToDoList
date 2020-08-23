@@ -21,6 +21,9 @@ import com.ruyue.todolist.databinding.ActivityLoginBinding;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 import okhttp3.Call;
@@ -50,9 +53,13 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(v -> {
             String name = editTextName.getText().toString();
             String password = editTextPassword.getText().toString();
-            String md5Password = MD5.getMD5(password);
-            Log.d("------------------", md5Password);
-            getUserInfo(name, "e10adc3949ba59abbe56e057f20f883e");
+            String md5Password = null;
+            try {
+                md5Password = getMD5(password);
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+            getUserInfo(name, md5Password);
         });
 
         judgeNameIsLegal();
@@ -156,5 +163,11 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(), "用户不存在", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static String getMD5(String str) throws NoSuchAlgorithmException {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(str.getBytes());
+            return new BigInteger(1, md.digest()).toString(16);
     }
 }
