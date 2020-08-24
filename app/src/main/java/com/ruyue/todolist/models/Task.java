@@ -13,6 +13,15 @@ public class Task {
     public Task() {
     }
 
+    public Task(int id, String title, String description, Boolean isFinished, Boolean isAlert, Date date) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.isFinished = isFinished;
+        this.isAlert = isAlert;
+        this.date = date;
+    }
+
     public int getId() {
         return id;
     }
@@ -59,5 +68,17 @@ public class Task {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", isFinished=" + isFinished +
+                ", isAlert=" + isAlert +
+                ", date=" + date +
+                '}';
     }
 }
