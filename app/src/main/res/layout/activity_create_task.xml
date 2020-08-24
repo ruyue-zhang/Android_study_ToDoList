@@ -1,24 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="CreateTaskViewModel"
             type="com.ruyue.todolist.viewmodels.CreateTaskViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".view.LoginActivity"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/dateBackground">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start" />
+
+            <Button
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/firstDate"/>
+
+<!--            <CalendarView-->
+<!--                android:id="@+id/calendar_view"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_horizontal"-->
+<!--                android:dateTextAppearance="@style/CalenderViewDateCustomText"-->
+<!--                android:theme="@style/CalenderViewCustom"-->
+<!--                android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"-->
+<!--                android:visibility="invisible"/>-->
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/title"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/description"
+            />
 
 
 
 
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    </LinearLayout>
 </layout>
 
