@@ -46,10 +46,15 @@ public class LoginViewModel extends AndroidViewModel {
     private static final int SUCCESS = 0;
     private static final int PASSWORD_ERROR = 1;
     private static final int NAME_NOT_EXIST = 2;
+//    private LocalDataSource userDb;
+//    private UserDao userDao;
+
 
     public LoginViewModel(@NonNull Application mContext) {
         super(mContext);
         this.mContext = mContext.getApplicationContext();
+//        userDb = LocalDataSource.getInstance(mContext);
+//        userDao = userDb.userDao();
     }
 
     public ObservableField<String> getName() {
@@ -170,5 +175,11 @@ public class LoginViewModel extends AndroidViewModel {
     public void jsonStringToUserList(String result) {
         Gson gson = new Gson();
         serviceUser = gson.fromJson(result, User.class);
+        //serviceUser.setLoginStatus(true);
+        //insertUserInRoom(serviceUser);
     }
+
+//    public void insertUserInRoom(User user) {
+//        userDao.insertUser(user);
+//    }
 }

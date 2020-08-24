@@ -48,6 +48,7 @@ import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
     private LoginViewModel loginViewModel;
+//    private UserDao userDao;
     SharedPreferences sprfMain;
     SharedPreferences.Editor editorMain;
 
@@ -59,6 +60,9 @@ public class LoginActivity extends AppCompatActivity {
 
         binding.setLifecycleOwner(this);
         binding.setLoginViewModel(loginViewModel);
+//        MyApplication myApplication = (MyApplication)getApplication();
+//        userDao = myApplication.getLocalDataSource().userDao();
+
 
         sprfMain = PreferenceManager.getDefaultSharedPreferences(this);
         editorMain = sprfMain.edit();
@@ -76,20 +80,23 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel.judgePasswordIsLegal(editTextPassword, loginBtn);
         loginViewModel.getUserInfo();
 
-        loginBtn.setOnClickListener(v -> {
-            switch (loginViewModel.login()) {
-                case 0:
-                    Intent intent  = new Intent(LoginActivity.this, MainPageActivity.class);
-                    editorMain.putBoolean("main",true).apply();
-                    startActivity(intent);
-                    LoginActivity.this.finish();
-                    break;
-                case 1:
-                    Toast.makeText(getApplicationContext(), "密码错误", Toast.LENGTH_SHORT).show();
-                    break;
-                case 2:
-                    Toast.makeText(getApplicationContext(), "用户不存在", Toast.LENGTH_SHORT).show();
-                    break;
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (loginViewModel.login()) {
+                    case 0:
+                        Intent intent  = new Intent(LoginActivity.this, MainPageActivity.class);
+                        editorMain.putBoolean("main",true).apply();
+                        startActivity(intent);
+                        LoginActivity.this.finish();
+                        break;
+                    case 1:
+                        Toast.makeText(getApplicationContext(), "密码错误", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        Toast.makeText(getApplicationContext(), "用户不存在", Toast.LENGTH_SHORT).show();
+                        break;
+                }
             }
         });
     }
