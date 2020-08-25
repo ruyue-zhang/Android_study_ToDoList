@@ -7,4 +7,5 @@
     <string name="title">Title</string>
     <string name="description">描述....</string>
     <string name="firstDate">2014年3月25</string>
+    <string name="hit">提醒</string>
 </resources>

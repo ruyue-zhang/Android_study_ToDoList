@@ -23,6 +23,7 @@ public class CreateTaskViewModel extends AndroidViewModel {
     public CreateTaskViewModel(@NonNull Application application) {
         super(application);
         this.mContext = application.getApplicationContext();
+        date.set("ÈÕÆÚ");
     }
 
     public Context getmContext() {
