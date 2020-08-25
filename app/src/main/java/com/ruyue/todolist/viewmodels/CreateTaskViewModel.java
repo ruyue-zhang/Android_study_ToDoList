@@ -9,8 +9,6 @@ import androidx.lifecycle.AndroidViewModel;
 
 import com.ruyue.todolist.models.Task;
 
-import java.util.Date;
-
 public class CreateTaskViewModel extends AndroidViewModel {
     private final Context mContext;
     private ObservableField<Integer> id = new ObservableField<>();
@@ -43,10 +41,16 @@ public class CreateTaskViewModel extends AndroidViewModel {
     }
 
     public ObservableField<Boolean> getIsFinished() {
-        return isFinished;
+        if(isFinished.get() == null) {
+            isFinished.set(false);
+        }
+            return isFinished;
     }
 
     public ObservableField<Boolean> getIsAlert() {
+        if(isAlert.get() == null) {
+            isAlert.set(false);
+        }
         return isAlert;
     }
 
@@ -55,6 +59,10 @@ public class CreateTaskViewModel extends AndroidViewModel {
     }
 
     public void insertToRoom() {
+        Task task = new Task(1,title.get(),description.get(),isFinished.get(),isAlert.get(),date.get());
+    }
 
+    public void getDateFromCalendar(String date) {
+        this.date.set(date);
     }
 }

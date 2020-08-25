@@ -8,12 +8,12 @@ public class Task {
     private String description;
     private Boolean isFinished;
     private Boolean isAlert;
-    private Date date;
+    private String date;
 
     public Task() {
     }
 
-    public Task(int id, String title, String description, Boolean isFinished, Boolean isAlert, Date date) {
+    public Task(int id, String title, String description, Boolean isFinished, Boolean isAlert, String date) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -62,11 +62,11 @@ public class Task {
         isAlert = alert;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
