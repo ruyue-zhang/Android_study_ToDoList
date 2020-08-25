@@ -1,15 +1,18 @@
 package com.ruyue.todolist.models;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.List;
 
+@Dao
 public interface TaskDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTask(Task task);
 
     @Delete
@@ -19,7 +22,7 @@ public interface TaskDao {
     void updateTask(Task task);
 
     @Query("SELECT * FROM task")
-    LiveData<List<Task>> getTaskList();//希望监听学生表的变化，为其加上LiveData
+    List<Task> getTaskList();
 
     @Query("SELECT * FROM task WHERE id = :id")
     Task getTaskById(int id);

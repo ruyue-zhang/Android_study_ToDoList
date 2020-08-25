@@ -1,5 +1,6 @@
 package com.ruyue.todolist.models;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -8,18 +9,28 @@ import androidx.room.PrimaryKey;
 public class Task {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    @ColumnInfo(name = "title")
     private String title;
+    @ColumnInfo(name = "description")
     private String description;
+    @ColumnInfo(name = "is_finished")
     private Boolean isFinished;
+    @ColumnInfo(name = "is_alert")
     private Boolean isAlert;
+    @ColumnInfo(name = "date")
     private String date;
 
     @Ignore
-    public Task() {
-    }
-
     public Task(int id, String title, String description, Boolean isFinished, Boolean isAlert, String date) {
         this.id = id;
+        this.title = title;
+        this.description = description;
+        this.isFinished = isFinished;
+        this.isAlert = isAlert;
+        this.date = date;
+    }
+
+    public Task(String title, String description, Boolean isFinished, Boolean isAlert, String date) {
         this.title = title;
         this.description = description;
         this.isFinished = isFinished;

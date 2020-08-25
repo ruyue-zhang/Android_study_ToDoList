@@ -24,15 +24,17 @@ import android.widget.Toast;
 
 import com.ruyue.todolist.R;
 import com.ruyue.todolist.databinding.ActivityCreateTaskBinding;
+import com.ruyue.todolist.models.LocalDataSource;
 import com.ruyue.todolist.models.Task;
 import com.ruyue.todolist.viewmodels.CreateTaskViewModel;
 import com.ruyue.todolist.viewmodels.LoginViewModel;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class CreateTaskActivity extends AppCompatActivity {
-    private CreateTaskViewModel createTaskViewModel;
+    CreateTaskViewModel createTaskViewModel;
     Calendar calendar;
     CalendarView calendarView;
     Button createSuccessBtn;
@@ -46,7 +48,7 @@ public class CreateTaskActivity extends AppCompatActivity {
 
         binding.setLifecycleOwner(this);
         binding.setCreateTaskViewModel(createTaskViewModel);
-        getSupportActionBar().setElevation(0); //去掉ActionBar的分割线
+        getSupportActionBar().setElevation(0);
         Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(getResources().getColor(R.color.btn_text_color), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
@@ -54,19 +56,20 @@ public class CreateTaskActivity extends AppCompatActivity {
         editTitle = findViewById(R.id.title);
         Button dateButton = findViewById(R.id.date);
         createSuccessBtn = findViewById(R.id.create_success);
+        Button dateBtn = findViewById(R.id.date);
 
         createTaskViewModel.inputNotEmpty(editTitle, createSuccessBtn);
-        createTaskViewModel.dateNotEmpty(dateButton, createSuccessBtn);
+        createTaskViewModel.dateNotEmpty(dateButton, createSuccessBtn, dateBtn);
 
-
-        //如果创建成功（create_success按钮被点击），jumpToMainPageWithData函数
         createSuccessBtn.setOnClickListener(v -> {
-            //createTaskViewModel.insertToRoom();
+            createTaskViewModel.insertToRoom();
             jumpToMainPageWithData();
         });
 
         findViewById(R.id.date).setOnClickListener(v -> openCalendarDialog());
     }
+
+
 
     public void jumpToMainPageWithData() {
         Intent intent = new Intent(CreateTaskActivity.this, MainPageActivity.class);

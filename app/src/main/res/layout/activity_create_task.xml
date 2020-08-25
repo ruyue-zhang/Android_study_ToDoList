@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="15dp"
+                android:theme="@style/MyCheckBox"
                 android:checked="@={createTaskViewModel.isFinished}" />
 
             <Button
@@ -35,7 +36,8 @@
                 android:layout_centerVertical="true"
                 android:outlineProvider="none"
                 android:textSize="16sp"
-                android:textColor="@color/sys_blue"
+                android:background="@null"
+                android:textColor="@color/btn_text_color"
                 android:text="@={createTaskViewModel.date}"/>
 
             <TextView
@@ -60,7 +62,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="0.5dp"
                 android:layout_alignParentBottom="true"
                 android:background="@color/btn_text_color" />
 
@@ -89,8 +91,8 @@
 
         <Button
             android:id="@+id/create_success"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="@drawable/check_selected"
             android:layout_gravity="end"
             android:layout_marginEnd="30dp"

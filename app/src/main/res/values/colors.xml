@@ -5,7 +5,7 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="btn_text_color">#84868a</color>
     <color name="btn_enable_text_color">#FFFF</color>
-    <color name="dateBackground">#fffcfc</color>
+    <color name="dateBackground">#FFFFFF</color>
     <color name="crossLine">#f1f1f1</color>
     <color name="sys_blue">#5ba5ef</color>
     <color name="hit_text_color">#c4c5c7</color>

@@ -4,8 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -15,10 +13,8 @@ import androidx.lifecycle.AndroidViewModel;
 
 import com.google.gson.Gson;
 import com.ruyue.todolist.R;
-import com.ruyue.todolist.models.LocalDataSource;
 import com.ruyue.todolist.models.User;
-import com.ruyue.todolist.models.UserDao;
-import com.ruyue.todolist.view.MyApplication;
+
 
 import org.jetbrains.annotations.NotNull;
 
