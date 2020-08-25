@@ -14,26 +14,27 @@
         android:orientation="vertical">
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="130dp"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
             android:background="@color/dateBackground">
 
             <CheckBox
                 android:id="@+id/is_finished"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="@={createTaskViewModel.isFinished}"
-                android:gravity="start" />
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:checked="@={createTaskViewModel.isFinished}" />
 
             <Button
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:outlineProvider="none"
                 android:text="@={createTaskViewModel.date}"/>
 
 <!--            <CalendarView-->
@@ -47,14 +48,16 @@
 <!--                android:visibility="invisible"/>-->
 
             <Switch
+                android:id="@+id/is_alert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="end"
                 tools:ignore="UseSwitchCompatOrMaterialXml"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:checked="@={createTaskViewModel.isAlert}"
                 />
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <EditText
             android:layout_width="match_parent"

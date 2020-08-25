@@ -7,5 +7,6 @@
     <color name="btn_enable_text_color">#FFFF</color>
     <color name="dateBackground">#fffcfc</color>
     <color name="crossLine">#f1f1f1</color>
+    <color name="sys_blue">#5ba5ef</color>
 
 </resources>
