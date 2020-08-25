@@ -1,8 +1,12 @@
 package com.ruyue.todolist.models;
 
-import java.util.Date;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
+@Entity
 public class Task {
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String title;
     private String description;
@@ -10,6 +14,7 @@ public class Task {
     private Boolean isAlert;
     private String date;
 
+    @Ignore
     public Task() {
     }
 
