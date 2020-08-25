@@ -28,10 +28,11 @@ public class MainPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainPageViewModel = ViewModelProviders.of(this).get(MainPageViewModel.class);
-        ActivityMainPageBinding binding = DataBindingUtil.setContentView(MainPageActivity.this, R.layout.activity_create_task);
+        ActivityMainPageBinding binding = DataBindingUtil.setContentView(MainPageActivity.this, R.layout.activity_main_page);
 
         binding.setLifecycleOwner(this);
         binding.setMainPageViewModel(mainPageViewModel);
+        getSupportActionBar().setElevation(0);
 //        localDataSource = LocalDataSource.getInstance(this);
 
 //        taskList = new ArrayList<>();
