@@ -2,6 +2,10 @@ package com.ruyue.todolist.viewmodels;
 
 import android.app.Application;
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -17,6 +21,8 @@ public class CreateTaskViewModel extends AndroidViewModel {
     private ObservableField<Boolean> isFinished = new ObservableField<>();
     private ObservableField<Boolean> isAlert = new ObservableField<>();
     private ObservableField<String> date = new ObservableField<>();
+    private Boolean titleLegal = false;
+    private Boolean dateLegal = false;
 
     public CreateTaskViewModel(@NonNull Application application) {
         super(application);
@@ -64,5 +70,53 @@ public class CreateTaskViewModel extends AndroidViewModel {
 
     public void getDateFromCalendar(String date) {
         this.date.set(date);
+    }
+
+    public void inputNotEmpty(EditText inputTitle, Button createBtn) {
+        TextWatcher watcherTitle = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (title.get().length() <= 0) {
+                    titleLegal = false;
+                    createBtn.setEnabled(false);
+                } else {
+                    titleLegal = true;
+                    if(dateLegal) {
+                        createBtn.setEnabled(true);
+                    } else {
+                        createBtn.setEnabled(false);
+                    }
+                }
+            }
+        };
+        inputTitle.addTextChangedListener(watcherTitle);
+    }
+
+    public void dateNotEmpty(Button dateButton, Button createBtn) {
+        TextWatcher watcherdate = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (date.get().equals("ÈÕÆÚ")) {
+                    dateLegal = false;
+                    createBtn.setEnabled(false);
+                } else {
+                    dateLegal = true;
+                    if(titleLegal) {
+                        createBtn.setEnabled(true);
+                    } else {
+                        createBtn.setEnabled(false);
+                    }
+                }
+            }
+        };
+        dateButton.addTextChangedListener(watcherdate);
     }
 }

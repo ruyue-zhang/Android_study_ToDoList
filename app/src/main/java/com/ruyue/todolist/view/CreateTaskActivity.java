@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.ruyue.todolist.R;
@@ -34,6 +35,8 @@ public class CreateTaskActivity extends AppCompatActivity {
     private CreateTaskViewModel createTaskViewModel;
     Calendar calendar;
     CalendarView calendarView;
+    Button createSuccessBtn;
+    EditText editTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +51,17 @@ public class CreateTaskActivity extends AppCompatActivity {
         upArrow.setColorFilter(getResources().getColor(R.color.btn_text_color), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
+        editTitle = findViewById(R.id.title);
+        Button dateButton = findViewById(R.id.date);
+        createSuccessBtn = findViewById(R.id.create_success);
+
+        createTaskViewModel.inputNotEmpty(editTitle, createSuccessBtn);
+        createTaskViewModel.dateNotEmpty(dateButton, createSuccessBtn);
+
+
         //如果创建成功（create_success按钮被点击），jumpToMainPageWithData函数
-        findViewById(R.id.create_success).setOnClickListener(v -> {
-            createTaskViewModel.insertToRoom();
+        createSuccessBtn.setOnClickListener(v -> {
+            //createTaskViewModel.insertToRoom();
             jumpToMainPageWithData();
         });
 
