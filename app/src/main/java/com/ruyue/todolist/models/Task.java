@@ -111,14 +111,18 @@ public class Task implements Comparable<Task>{
         Date date1 = null;
         Date date2 = null;
         int compareTo = 0;
-        try {
-            date1 = simpleDateFormat.parse(this.getDate());
-            date2 = simpleDateFormat.parse(task.getDate());
-            compareTo = date1.compareTo(date2);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(this.getFinished() ^ task.getFinished()) {
+            return task.getFinished() ? -1 : 1;
+        } else {
+            try {
+                date1 = simpleDateFormat.parse(this.getDate());
+                date2 = simpleDateFormat.parse(task.getDate());
+                compareTo = date1.compareTo(date2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return compareTo;
         }
-        return compareTo;
-    }
 
+    }
 }
