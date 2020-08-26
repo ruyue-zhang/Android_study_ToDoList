@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -78,10 +79,6 @@ public class MainPageActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = menu.findItem(R.id.exit);
-        SpannableString spannableString = new SpannableString(item.getTitle());
-        spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.btn_text_color)),0,spannableString.length(),0);
-        item.setTitle(spannableString);
 
         return super.onCreateOptionsMenu(menu);
     }

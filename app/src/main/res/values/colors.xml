@@ -10,4 +10,5 @@
     <color name="sys_blue">#5ba5ef</color>
     <color name="hit_text_color">#c4c5c7</color>
     <color name="title">#8c8c8c</color>
+    <color name="delete_text">#dddee1</color>
 </resources>
