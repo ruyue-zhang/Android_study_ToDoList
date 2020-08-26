@@ -1,6 +1,7 @@
 package com.ruyue.todolist.view;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,9 @@ import android.widget.TextView;
 import com.ruyue.todolist.R;
 import com.ruyue.todolist.models.Task;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class TaskAdapter extends BaseAdapter {
@@ -61,7 +65,9 @@ public class TaskAdapter extends BaseAdapter {
         }
         viewHolder.isFinished.setChecked(data.get(position).getFinished());
         viewHolder.title.setText(data.get(position).getTitle());
-        viewHolder.date.setText(data.get(position).getDate());
+        String[] dateStrList = data.get(position).getDate().split("-");
+        String displayDate = dateStrList[1] + "ÔÂ" + dateStrList[2] + "ÈÕ";
+        viewHolder.date.setText(displayDate);
         return convertView;
     }
 }

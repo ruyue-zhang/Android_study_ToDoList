@@ -89,7 +89,7 @@ public class CreateTaskActivity extends AppCompatActivity {
         calendar.add(Calendar.YEAR, 1);
         calendarView = customView.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener((calendarView, year, month, day) -> {
-            dateInsert = year + "-" + (month +1) + "-" + day;
+            dateInsert = year + "-" + (month + 1) + "-" + day;
             String date = year + "Äê" + (month +1) + "ÔÂ" + day + "ÈÕ";
             createTaskViewModel.getDateFromCalendar(date);
             dialog.dismiss();

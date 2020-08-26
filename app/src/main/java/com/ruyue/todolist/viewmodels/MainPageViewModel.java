@@ -12,9 +12,11 @@ import com.ruyue.todolist.models.Task;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class MainPageViewModel extends AndroidViewModel {
     private ObservableField<String> curDate = new ObservableField<>();
@@ -59,7 +61,6 @@ public class MainPageViewModel extends AndroidViewModel {
             public void run() {
                 taskList = localDataSource.taskDao().getTaskList();
                 int size = taskList.size();
-                //runOnUiThread(() -> Toast.makeText(MainPageActivity.this, taskList.get(taskList.size() -1).toString(), Toast.LENGTH_SHORT).show());
             }
         }).start();
         if(taskList != null) {
@@ -68,18 +69,24 @@ public class MainPageViewModel extends AndroidViewModel {
             long time = System.currentTimeMillis();
             Date date=new Date(time);
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss EEEE");
-
             format = new SimpleDateFormat("MMMM",Locale.US);
             curMonth.set(format.format(date));
-
             format = new SimpleDateFormat("EEEE",Locale.US);
             String week = format.format(date);
             format = new SimpleDateFormat("dd");
             String day = format.format(date);
-
             curDate.set(week + ", "+ day +"th");
+
+            //先转化为date时间，进行排序
+            //将date的格式变化为X月XX日的字符串
+            //sortByDate();
         }
         return taskList;
+    }
+
+    private void sortByDate() {
+        taskList.stream()
+                .sorted(Comparator.comparing(Task::getDate));
     }
 
 }

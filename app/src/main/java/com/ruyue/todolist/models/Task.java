@@ -1,12 +1,18 @@
 package com.ruyue.todolist.models;
 
+import android.util.Log;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Entity
-public class Task {
+public class Task implements Comparable<Task>{
     @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo(name = "title")
@@ -97,4 +103,22 @@ public class Task {
                 ", date=" + date +
                 '}';
     }
+
+    @Override
+    public int compareTo(Task task) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateString = null;
+        Date date1 = null;
+        Date date2 = null;
+        int compareTo = 0;
+        try {
+            date1 = simpleDateFormat.parse(this.getDate());
+            date2 = simpleDateFormat.parse(task.getDate());
+            compareTo = date1.compareTo(date2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return compareTo;
+    }
+
 }

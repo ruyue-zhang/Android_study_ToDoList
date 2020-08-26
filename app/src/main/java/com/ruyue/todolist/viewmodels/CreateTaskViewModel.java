@@ -18,6 +18,9 @@ import com.ruyue.todolist.R;
 import com.ruyue.todolist.models.LocalDataSource;
 import com.ruyue.todolist.models.Task;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class CreateTaskViewModel extends AndroidViewModel {
@@ -136,5 +139,13 @@ public class CreateTaskViewModel extends AndroidViewModel {
 //
 //    public LiveData<List<Task>> getLiveDataTask() {
 //        return liveDataTask;
+//    }
+
+//    SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd");
+//    Date date = null;
+//        try {
+//        date = format.parse(dateInsert);
+//    } catch (ParseException e) {
+//        e.printStackTrace();
 //    }
 }

@@ -19,8 +19,10 @@ import com.ruyue.todolist.models.Task;
 import com.ruyue.todolist.viewmodels.CreateTaskViewModel;
 import com.ruyue.todolist.viewmodels.MainPageViewModel;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +45,9 @@ public class MainPageActivity extends AppCompatActivity {
         while(taskList == null) {
             taskList = mainPageViewModel.getTaskList();
         }
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyƒÍMM‘¬dd»’");
+
+        Collections.sort(taskList);
+//
 //        taskList.stream().sorted(Comparator.comparing(simpleDateFormat.parse(task::getDate)));
         ListView listViewTask = findViewById(R.id.task_list_view);
         taskAdapter = new TaskAdapter(MainPageActivity.this, taskList);
