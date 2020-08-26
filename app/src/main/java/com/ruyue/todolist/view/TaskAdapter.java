@@ -33,7 +33,7 @@ public class TaskAdapter extends BaseAdapter {
         if(data == null) {
             return 0;
         }
-        return 0;
+        return data.size();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class TaskAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if(convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.list_item_task, null);
+            convertView = layoutInflater.inflate(R.layout.list_item_task, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.isFinished = convertView.findViewById(R.id.is_finished);
             viewHolder.title = convertView.findViewById(R.id.title);

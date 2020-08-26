@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ruyue.todolist.R;
@@ -22,43 +23,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainPageActivity extends AppCompatActivity {
-    MainPageViewModel mainPageViewModel;
- //   LocalDataSource localDataSource;
+    private LocalDataSource localDataSource;
+    private MainPageViewModel mainPageViewModel;
+    private TaskAdapter taskAdapter;
+    private List<Task> taskList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainPageViewModel = ViewModelProviders.of(this).get(MainPageViewModel.class);
         ActivityMainPageBinding binding = DataBindingUtil.setContentView(MainPageActivity.this, R.layout.activity_main_page);
-
         binding.setLifecycleOwner(this);
         binding.setMainPageViewModel(mainPageViewModel);
         getSupportActionBar().setElevation(0);
-//        localDataSource = LocalDataSource.getInstance(this);
 
-//        taskList = new ArrayList<>();
-//
-//        findViewById(R.id.jump_to_create).setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                Intent intent = new Intent(MainPageActivity.this, CreateTaskActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        while(taskList == null) {
+            taskList = mainPageViewModel.getTaskList();
+        }
+        taskList.stream().sorted()
+
+        ListView listViewTask = findViewById(R.id.task_list_view);
+        taskAdapter = new TaskAdapter(MainPageActivity.this, taskList);
+        listViewTask.setAdapter(taskAdapter);
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                taskList = localDataSource.taskDao().getTaskList();
-//                runOnUiThread(() -> Toast.makeText(MainPageActivity.this, taskList.get(taskList.size() -1).toString(), Toast.LENGTH_SHORT).show());
-//            }
-//        }).start();
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     public void onBackPressed() {
