@@ -13,8 +13,11 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".view.CreateTaskActivity"
-            android:parentActivityName=".view.MainPageActivity" />
-        <activity android:name=".view.MainPageActivity" />
+            android:parentActivityName=".view.MainPageActivity"
+            android:label="" />
+        <activity
+            android:name=".view.MainPageActivity"
+            android:label=""/>
         <activity
             android:name=".view.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

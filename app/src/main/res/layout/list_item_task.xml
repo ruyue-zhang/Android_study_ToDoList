@@ -4,7 +4,7 @@
     android:layout_height="60dp"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:paddingHorizontal="15dp"
+    android:paddingHorizontal="20dp"
     xmlns:tools="http://schemas.android.com/tools">
 
     <CheckBox
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:gravity="end"
         tools:text="7月23日"
-        android:textSize="17sp"
+        android:textSize="15sp"
         android:layout_weight="4"/>
 
 </LinearLayout>
