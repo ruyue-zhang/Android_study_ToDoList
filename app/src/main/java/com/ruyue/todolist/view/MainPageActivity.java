@@ -82,6 +82,7 @@ public class MainPageActivity extends AppCompatActivity {
         SpannableString spannableString = new SpannableString(item.getTitle());
         spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.btn_text_color)),0,spannableString.length(),0);
         item.setTitle(spannableString);
+
         return super.onCreateOptionsMenu(menu);
     }
 }
