@@ -75,8 +75,8 @@ public class CreateTaskViewModel extends AndroidViewModel {
         return date;
     }
 
-    public void insertToRoom() {
-        Task task = new Task(title.get(),description.get(),isFinished.get(),isAlert.get(),date.get());
+    public void insertToRoom(String dateInsert) {
+        Task task = new Task(title.get(),description.get(),isFinished.get(),isAlert.get(),dateInsert);
         new Thread(() -> localDataSource.taskDao().insertTask(task)).start();
     }
 

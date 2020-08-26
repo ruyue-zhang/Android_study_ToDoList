@@ -4,34 +4,35 @@
     android:layout_height="60dp"
     android:orientation="horizontal"
     android:gravity="center_vertical"
+    android:paddingHorizontal="15dp"
     xmlns:tools="http://schemas.android.com/tools">
 
     <CheckBox
         android:id="@+id/is_finished"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:theme="@style/MyCheckBox"
-        android:layout_weight="1"/>
+        android:layout_weight="5"/>
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/btn_text_color"
-        android:gravity="left"
+        android:gravity="start"
         android:textSize="19sp"
         tools:text="做一顿丰富的早餐"
-
-        android:layout_weight="3"/>
+        android:layout_marginStart="10dp"
+        android:layout_weight="2"/>
 
     <TextView
         android:id="@+id/date"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="end"
         tools:text="7月23日"
         android:textSize="17sp"
-        android:layout_weight="1.5"/>
+        android:layout_weight="4"/>
 
 </LinearLayout>

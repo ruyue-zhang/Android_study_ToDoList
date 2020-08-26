@@ -60,10 +60,18 @@
         <ListView
             android:id="@+id/task_list_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="430dp"
             android:layout_marginBottom="20dp"
             android:divider="@color/btn_text_color"
             android:dividerHeight="1px"/>
+
+        <Button
+            android:id="@+id/jump_to_create"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/add_btn"
+            android:layout_gravity="end"
+            android:enabled="true" />
 
     </LinearLayout>
 </layout>

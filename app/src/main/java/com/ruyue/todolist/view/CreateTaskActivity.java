@@ -39,6 +39,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     CalendarView calendarView;
     Button createSuccessBtn;
     EditText editTitle;
+    String dateInsert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class CreateTaskActivity extends AppCompatActivity {
         createTaskViewModel.dateNotEmpty(dateButton, createSuccessBtn, dateBtn);
 
         createSuccessBtn.setOnClickListener(v -> {
-            createTaskViewModel.insertToRoom();
+            createTaskViewModel.insertToRoom(dateInsert);
             jumpToMainPageWithData();
         });
 
@@ -88,6 +89,7 @@ public class CreateTaskActivity extends AppCompatActivity {
         calendar.add(Calendar.YEAR, 1);
         calendarView = customView.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener((calendarView, year, month, day) -> {
+            dateInsert = year + "-" + (month +1) + "-" + day;
             String date = year + "Äê" + (month +1) + "ÔÂ" + day + "ÈÕ";
             createTaskViewModel.getDateFromCalendar(date);
             dialog.dismiss();

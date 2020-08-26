@@ -19,7 +19,10 @@ import com.ruyue.todolist.models.Task;
 import com.ruyue.todolist.viewmodels.CreateTaskViewModel;
 import com.ruyue.todolist.viewmodels.MainPageViewModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class MainPageActivity extends AppCompatActivity {
@@ -40,11 +43,21 @@ public class MainPageActivity extends AppCompatActivity {
         while(taskList == null) {
             taskList = mainPageViewModel.getTaskList();
         }
-        taskList.stream().sorted()
-
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyƒÍMM‘¬dd»’");
+//        taskList.stream().sorted(Comparator.comparing(simpleDateFormat.parse(task::getDate)));
         ListView listViewTask = findViewById(R.id.task_list_view);
         taskAdapter = new TaskAdapter(MainPageActivity.this, taskList);
         listViewTask.setAdapter(taskAdapter);
+
+        findViewById(R.id.jump_to_create).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainPageActivity.this, CreateTaskActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
