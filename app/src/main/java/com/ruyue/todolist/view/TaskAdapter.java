@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.ruyue.todolist.R;
 import com.ruyue.todolist.models.LocalDataSource;
 import com.ruyue.todolist.models.Task;
+
+import java.util.Collections;
 import java.util.List;
 
 public class TaskAdapter extends BaseAdapter {
@@ -78,13 +80,14 @@ public class TaskAdapter extends BaseAdapter {
                 if (isChecked) {
                     viewHolder.title.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                     viewHolder.title.setTextColor(context.getResources().getColor(R.color.delete_text));
+                    Collections.sort(data);
                     task.setFinished(true);
-
                 } else {
                     viewHolder.title.getPaint().setFlags(0);
                     viewHolder.title.setTextColor(context.getResources().getColor(R.color.btn_text_color));
                     task.setFinished(false);
                 }
+                Collections.sort(data);
                 notifyDataSetChanged();
                 new Thread(new Runnable() {
                     @Override
