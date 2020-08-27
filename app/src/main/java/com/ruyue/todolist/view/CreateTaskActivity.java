@@ -41,7 +41,6 @@ public class CreateTaskActivity extends AppCompatActivity {
     Button createSuccessBtn;
     EditText editTitle;
     String dateInsert;
-    Task changeTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +74,10 @@ public class CreateTaskActivity extends AppCompatActivity {
         if(intent.getBooleanExtra("flag", true)) {
             String changeTaskString = intent.getStringExtra("changeTask");
             Task changeTask = new Gson().fromJson(changeTaskString, Task.class);
-            createTaskViewModel.initInterface(changeTask, true);
+            createTaskViewModel.initInterface(changeTask);
+            CreateTaskViewModel.isChange = true;
+        } else {
+            CreateTaskViewModel.isChange = false;
         }
     }
 

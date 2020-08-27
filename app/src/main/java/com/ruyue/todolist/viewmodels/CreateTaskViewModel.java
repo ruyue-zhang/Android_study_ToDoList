@@ -17,7 +17,8 @@ import com.ruyue.todolist.models.Task;
 
 public class CreateTaskViewModel extends AndroidViewModel {
     private final Context mContext;
-    private Boolean isChange = false;
+    public static Boolean isChange = false;
+    private int changeId;
 
     public LocalDataSource localDataSource;
 
@@ -37,14 +38,13 @@ public class CreateTaskViewModel extends AndroidViewModel {
         date.set("ÈÕÆÚ");
     }
 
-    public void initInterface(Task changeTask, Boolean isChange) {
-        id.set(changeTask.getId());
+    public void initInterface(Task changeTask) {
+        changeId = changeTask.getId();
         title.set(changeTask.getTitle());
         description.set(changeTask.getDescription());
         isFinished.set(changeTask.getFinished());
         isAlert.set(changeTask.getAlert());
         date.set(changeTask.getDate());
-        isChange = isChange;
     }
 
     public Context getmContext() {
@@ -106,8 +106,14 @@ public class CreateTaskViewModel extends AndroidViewModel {
     }
 
     public void insertToRoom(String dateInsert) {
-        Task task = new Task(title.get(),description.get(),isFinished.get(),isAlert.get(),dateInsert);
-        new Thread(() -> localDataSource.taskDao().insertTask(task)).start();
+        if(isChange) {
+            Task task = new Task(changeId, title.get(), description.get(), isFinished.get(), isAlert.get(), dateInsert == null ? date.get() : dateInsert);
+            new Thread(() -> localDataSource.taskDao().updateTask(task)).start();
+        } else {
+            Task task = new Task(title.get(), description.get(), isFinished.get(), isAlert.get(), dateInsert);
+            new Thread(() -> localDataSource.taskDao().insertTask(task)).start();
+        }
+
     }
 
     public void getDateFromCalendar(String date) {
