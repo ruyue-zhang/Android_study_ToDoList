@@ -42,6 +42,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     FloatingActionButton createSuccessBtn;
     FloatingActionButton deleteTaskBtn;
     EditText editTitle;
+    Button dateButton
     String dateInsert;
     Task changeTask;
 
@@ -59,13 +60,12 @@ public class CreateTaskActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         editTitle = findViewById(R.id.title);
-        Button dateButton = findViewById(R.id.date);
+        dateButton = findViewById(R.id.date);
         createSuccessBtn = findViewById(R.id.create_success);
         deleteTaskBtn = findViewById(R.id.delete_task);
-        Button dateBtn = findViewById(R.id.date);
 
         createTaskViewModel.inputNotEmpty(editTitle, createSuccessBtn);
-        createTaskViewModel.dateNotEmpty(dateButton, createSuccessBtn, dateBtn);
+        createTaskViewModel.dateNotEmpty(dateButton, createSuccessBtn);
 
         createSuccessBtn.setOnClickListener(v -> {
             createTaskViewModel.insertToRoom(dateInsert);

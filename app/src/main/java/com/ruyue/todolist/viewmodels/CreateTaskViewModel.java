@@ -149,7 +149,7 @@ public class CreateTaskViewModel extends AndroidViewModel {
         inputTitle.addTextChangedListener(watcherTitle);
     }
 
-    public void dateNotEmpty(Button dateButton, FloatingActionButton createBtn, Button dateBtn) {
+    public void dateNotEmpty(Button dateButton, FloatingActionButton createBtn) {
         TextWatcher watcherDate = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -158,11 +158,11 @@ public class CreateTaskViewModel extends AndroidViewModel {
             @Override
             public void afterTextChanged(Editable s) {
                 if (date.get().equals("ÈÕÆÚ")) {
-                    dateBtn.setTextColor(mContext.getResources().getColor(R.color.btn_text_color));
+                    dateButton.setTextColor(mContext.getResources().getColor(R.color.btn_text_color));
                     dateLegal = false;
                     createBtn.setEnabled(false);
                 } else {
-                    dateBtn.setTextColor(mContext.getResources().getColor(R.color.sys_blue));
+                    dateButton.setTextColor(mContext.getResources().getColor(R.color.sys_blue));
                     dateLegal = true;
                     if(titleLegal) {
                         createBtn.setEnabled(true);
