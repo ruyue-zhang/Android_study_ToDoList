@@ -10,4 +10,5 @@
     <string name="hit">提醒</string>
     <string name="add">add</string>
     <string name="channel_name">toDoList</string>
+    <string name="exit">退出</string>
 </resources>

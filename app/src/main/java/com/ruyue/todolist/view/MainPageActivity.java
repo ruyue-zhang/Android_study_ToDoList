@@ -1,26 +1,21 @@
 package com.ruyue.todolist.view;
 
-import androidx.annotation.LongDef;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
+
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationChannelGroup;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -35,15 +30,10 @@ import com.ruyue.todolist.models.Task;
 import com.ruyue.todolist.viewmodels.MainPageViewModel;
 
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.stream.Collectors;
 
 public class MainPageActivity extends AppCompatActivity {
@@ -52,6 +42,9 @@ public class MainPageActivity extends AppCompatActivity {
     private TaskAdapter taskAdapter;
     private MyNotification myNotification;
     private List<Task> taskList;
+    SharedPreferences sprfMain;
+    SharedPreferences.Editor editorMain;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,16 +96,39 @@ public class MainPageActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        SubMenu addMenu = menu.addSubMenu(0, 1, 2, "overflow");
+        addMenu.add(0, 2, 0, "ÍË³ö");
+        MenuItem overFlowItem = addMenu.getItem();
+        overFlowItem.setIcon(R.drawable.ic_baseline_more_vert_24);
+        overFlowItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == 2) {
+            resetSprfMain();
+            Intent intent = new Intent(MainPageActivity.this, LoginActivity.class);
+            startActivity(intent);
+            MainPageActivity.this.finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void resetSprfMain(){
+        sprfMain = PreferenceManager.getDefaultSharedPreferences(this);
+        editorMain = sprfMain.edit();
+        editorMain.putBoolean("main",false);
+        editorMain.apply();
+    }
+
 
     private void updateNotification() {
         myNotification.cancelAllNotification();
         List<Task> hitTaskList = taskList.stream().filter(task -> !task.getFinished() && task.getAlert()).collect(Collectors.toList());
         for (Task task : hitTaskList) {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String hitTimeStr = task.getDate() + " 17:30:00";
+            String hitTimeStr = task.getDate() + " 17:39:00";
             Date hitTime = null;
             try {
                 hitTime = format.parse(hitTimeStr);
