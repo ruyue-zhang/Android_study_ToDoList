@@ -40,8 +40,10 @@ public class CreateTaskActivity extends AppCompatActivity {
     Calendar calendar;
     CalendarView calendarView;
     FloatingActionButton createSuccessBtn;
+    FloatingActionButton deleteTaskBtn;
     EditText editTitle;
     String dateInsert;
+    Task changeTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class CreateTaskActivity extends AppCompatActivity {
         editTitle = findViewById(R.id.title);
         Button dateButton = findViewById(R.id.date);
         createSuccessBtn = findViewById(R.id.create_success);
+        deleteTaskBtn = findViewById(R.id.delete_task);
         Button dateBtn = findViewById(R.id.date);
 
         createTaskViewModel.inputNotEmpty(editTitle, createSuccessBtn);
@@ -69,15 +72,28 @@ public class CreateTaskActivity extends AppCompatActivity {
             jumpToMainPageWithData();
         });
 
+        deleteTaskBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createTaskViewModel.deleteFromRoom(changeTask);
+                jumpToMainPageWithData();
+            }
+        });
+
         findViewById(R.id.date).setOnClickListener(v -> openCalendarDialog());
+
 
         Intent intent = getIntent();
         if(intent.getBooleanExtra("flag", true)) {
             String changeTaskString = intent.getStringExtra("changeTask");
-            Task changeTask = new Gson().fromJson(changeTaskString, Task.class);
+            changeTask = new Gson().fromJson(changeTaskString, Task.class);
             createTaskViewModel.initInterface(changeTask);
             CreateTaskViewModel.isChange = true;
+            deleteTaskBtn.setEnabled(true);
+            deleteTaskBtn.setVisibility(View.VISIBLE);
         } else {
+            deleteTaskBtn.setEnabled(false);
+            deleteTaskBtn.setVisibility(View.INVISIBLE);
             CreateTaskViewModel.isChange = false;
         }
     }

@@ -174,4 +174,8 @@ public class CreateTaskViewModel extends AndroidViewModel {
         };
         dateButton.addTextChangedListener(watcherDate);
     }
+
+    public void deleteFromRoom(Task task) {
+        new Thread(() -> localDataSource.taskDao().deleteTask(task)).start();
+    }
 }

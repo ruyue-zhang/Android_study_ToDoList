@@ -20,6 +20,7 @@
         <item name="colorControlActivated">@color/sys_blue</item>
     </style>
 
+
     <style name="CalenderViewCustom" parent="Theme.AppCompat">
         <item name="colorAccent">@android:color/holo_blue_dark</item>
         <item name="colorPrimary">@android:color/darker_gray</item>

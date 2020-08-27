@@ -94,6 +94,19 @@
             android:text="@={createTaskViewModel.description}"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/delete_task"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/delete_task"
+            android:background="@color/btn_text_color"
+            android:layout_alignParentBottom="true"
+            android:layout_toStartOf="@+id/create_success"
+            android:layout_marginEnd="40dp"
+            android:scaleType="center"
+            android:enabled="false"
+            android:visibility="invisible"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/create_success"
             android:layout_width="60dp"
             android:layout_height="60dp"
