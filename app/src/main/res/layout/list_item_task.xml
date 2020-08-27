@@ -5,6 +5,7 @@
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:paddingHorizontal="20dp"
+    android:descendantFocusability="blocksDescendants"
     xmlns:tools="http://schemas.android.com/tools">
 
     <CheckBox

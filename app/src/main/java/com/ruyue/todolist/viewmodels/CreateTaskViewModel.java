@@ -2,29 +2,22 @@ package com.ruyue.todolist.viewmodels;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
 import com.ruyue.todolist.R;
 import com.ruyue.todolist.models.LocalDataSource;
 import com.ruyue.todolist.models.Task;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
 public class CreateTaskViewModel extends AndroidViewModel {
     private final Context mContext;
+    private Boolean isChange = false;
 
     public LocalDataSource localDataSource;
 
@@ -42,6 +35,16 @@ public class CreateTaskViewModel extends AndroidViewModel {
         this.mContext = application.getApplicationContext();
         localDataSource = LocalDataSource.getInstance(this.mContext);
         date.set("ÈÕÆÚ");
+    }
+
+    public void initInterface(Task changeTask, Boolean isChange) {
+        id.set(changeTask.getId());
+        title.set(changeTask.getTitle());
+        description.set(changeTask.getDescription());
+        isFinished.set(changeTask.getFinished());
+        isAlert.set(changeTask.getAlert());
+        date.set(changeTask.getDate());
+        isChange = isChange;
     }
 
     public Context getmContext() {
@@ -76,6 +79,30 @@ public class CreateTaskViewModel extends AndroidViewModel {
 
     public ObservableField<String> getDate() {
         return date;
+    }
+
+    public void setId(ObservableField<Integer> id) {
+        this.id = id;
+    }
+
+    public void setTitle(ObservableField<String> title) {
+        this.title = title;
+    }
+
+    public void setDescription(ObservableField<String> description) {
+        this.description = description;
+    }
+
+    public void setIsFinished(ObservableField<Boolean> isFinished) {
+        this.isFinished = isFinished;
+    }
+
+    public void setIsAlert(ObservableField<Boolean> isAlert) {
+        this.isAlert = isAlert;
+    }
+
+    public void setDate(ObservableField<String> date) {
+        this.date = date;
     }
 
     public void insertToRoom(String dateInsert) {
@@ -136,16 +163,4 @@ public class CreateTaskViewModel extends AndroidViewModel {
         };
         dateButton.addTextChangedListener(watcherDate);
     }
-//
-//    public LiveData<List<Task>> getLiveDataTask() {
-//        return liveDataTask;
-//    }
-
-//    SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd");
-//    Date date = null;
-//        try {
-//        date = format.parse(dateInsert);
-//    } catch (ParseException e) {
-//        e.printStackTrace();
-//    }
 }

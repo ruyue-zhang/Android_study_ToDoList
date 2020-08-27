@@ -97,6 +97,7 @@ public class TaskAdapter extends BaseAdapter {
                 }).start();
             }
         });
+
         viewHolder.isFinished.setChecked(data.get(position).getFinished());
         return convertView;
     }

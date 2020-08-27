@@ -1,7 +1,5 @@
 package com.ruyue.todolist.models;
 
-import android.util.Log;
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -12,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-public class Task implements Comparable<Task>{
+public class Task implements Comparable<Task> {
     @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo(name = "title")
@@ -25,6 +23,9 @@ public class Task implements Comparable<Task>{
     private Boolean isAlert;
     @ColumnInfo(name = "date")
     private String date;
+
+    public Task() {
+    }
 
     @Ignore
     public Task(int id, String title, String description, Boolean isFinished, Boolean isAlert, String date) {
