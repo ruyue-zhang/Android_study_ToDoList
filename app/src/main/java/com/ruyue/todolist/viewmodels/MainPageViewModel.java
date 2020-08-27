@@ -1,6 +1,7 @@
 package com.ruyue.todolist.viewmodels;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -56,7 +57,6 @@ public class MainPageViewModel extends AndroidViewModel {
             @Override
             public void run() {
                 taskList = localDataSource.taskDao().getTaskList();
-                int size = taskList.size();
             }
         }).start();
         if (taskList != null) {
@@ -72,6 +72,8 @@ public class MainPageViewModel extends AndroidViewModel {
             format = new SimpleDateFormat("dd");
             String day = format.format(date);
             curDate.set(week + ", " + day + "th");
+            format = new SimpleDateFormat("HH:mm:ss");
+            Log.d("----------------------", format.format(date));
         }
         return taskList;
     }

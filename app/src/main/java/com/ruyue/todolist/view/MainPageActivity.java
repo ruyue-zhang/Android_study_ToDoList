@@ -2,11 +2,23 @@ package com.ruyue.todolist.view;
 
 import androidx.annotation.LongDef;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationChannelGroup;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -22,19 +34,29 @@ import com.ruyue.todolist.models.LocalDataSource;
 import com.ruyue.todolist.models.Task;
 import com.ruyue.todolist.viewmodels.MainPageViewModel;
 
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.stream.Collectors;
 
 public class MainPageActivity extends AppCompatActivity {
     private LocalDataSource localDataSource;
     private MainPageViewModel mainPageViewModel;
     private TaskAdapter taskAdapter;
+    private MyNotification myNotification;
     private List<Task> taskList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        myNotification = new MyNotification(this);
         mainPageViewModel = ViewModelProviders.of(this).get(MainPageViewModel.class);
         ActivityMainPageBinding binding = DataBindingUtil.setContentView(MainPageActivity.this, R.layout.activity_main_page);
         binding.setLifecycleOwner(this);
@@ -71,11 +93,7 @@ public class MainPageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+        updateNotification();
     }
 
     @Override
@@ -87,5 +105,25 @@ public class MainPageActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void updateNotification() {
+        myNotification.cancelAllNotification();
+        List<Task> hitTaskList = taskList.stream().filter(task -> !task.getFinished() && task.getAlert()).collect(Collectors.toList());
+        for (Task task : hitTaskList) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String hitTimeStr = task.getDate() + " 17:30:00";
+            Date hitTime = null;
+            try {
+                hitTime = format.parse(hitTimeStr);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+           Intent intent = new Intent(this, AlarmReceiver.class);
+           intent.setAction("NOTIFICATION");
+           PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+           AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+           alarmManager.set(AlarmManager.RTC_WAKEUP, hitTime.getTime(), pendingIntent);
+        }
     }
 }

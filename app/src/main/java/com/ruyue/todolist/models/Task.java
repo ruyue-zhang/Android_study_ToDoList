@@ -2,6 +2,7 @@ package com.ruyue.todolist.models;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.text.ParseException;
@@ -23,6 +24,7 @@ public class Task implements Comparable<Task> {
     @ColumnInfo(name = "date")
     private String date;
 
+    @Ignore
     public Task() {
     }
 
@@ -35,6 +37,7 @@ public class Task implements Comparable<Task> {
         this.date = date;
     }
 
+    @Ignore
     public Task(String title, String description, Boolean isFinished, Boolean isAlert, String date) {
         this.title = title;
         this.description = description;

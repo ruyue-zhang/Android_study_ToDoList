@@ -11,13 +11,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver
+            android:name=".view.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.e_eduspace.TIMER_ACTION_REPEATING" />
+                <action android:name="com.e_eduspace.TIMER_ACTION" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".view.CreateTaskActivity"
-            android:parentActivityName=".view.MainPageActivity"
-            android:label="" />
+            android:label=""
+            android:parentActivityName=".view.MainPageActivity" />
         <activity
             android:name=".view.MainPageActivity"
-            android:label=""/>
+            android:label="" />
         <activity
             android:name=".view.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

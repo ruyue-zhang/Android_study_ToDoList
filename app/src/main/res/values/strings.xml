@@ -9,4 +9,5 @@
     <string name="firstDate">2014年3月25</string>
     <string name="hit">提醒</string>
     <string name="add">add</string>
+    <string name="channel_name">toDoList</string>
 </resources>
