@@ -122,6 +122,5 @@ public class Task implements Comparable<Task> {
             }
             return compareTo;
         }
-
     }
 }

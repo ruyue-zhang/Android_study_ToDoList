@@ -44,7 +44,9 @@ public class CreateTaskViewModel extends AndroidViewModel {
         description.set(changeTask.getDescription());
         isFinished.set(changeTask.getFinished());
         isAlert.set(changeTask.getAlert());
-        date.set(changeTask.getDate());
+        String[] split = changeTask.getDate().split("-");
+        String dateString = split[0] + "Äê" + split[1] + "ÔÂ" + split[2] + "ÈÕ";
+        date.set(dateString);
     }
 
     public Context getmContext() {

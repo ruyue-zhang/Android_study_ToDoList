@@ -7,7 +7,12 @@
         <item name="colorPrimaryDark">@color/sys_blue</item>
         <item name="colorAccent">@color/sys_blue</item>
         <item name="actionMenuTextColor">@color/sys_blue</item>
+        <item name="actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
         <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+    </style>
+    
+    <style name="OverflowButtonStyle" parent="@android:style/Widget.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_baseline_more_vert_24</item>
     </style>
 
     <style name="MyCheckBox" parent="Theme.AppCompat.Light">
