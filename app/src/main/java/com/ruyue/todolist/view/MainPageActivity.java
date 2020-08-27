@@ -127,18 +127,20 @@ public class MainPageActivity extends AppCompatActivity {
         List<Task> hitTaskList = taskList.stream().filter(task -> !task.getFinished() && task.getAlert()).collect(Collectors.toList());
         for (Task task : hitTaskList) {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String hitTimeStr = task.getDate() + " 17:39:00";
+            String hitTimeStr = task.getDate() + " 19:22:00";
             Date hitTime = null;
             try {
                 hitTime = format.parse(hitTimeStr);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-           Intent intent = new Intent(this, AlarmReceiver.class);
-           intent.setAction("NOTIFICATION");
-           PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-           AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-           alarmManager.set(AlarmManager.RTC_WAKEUP, hitTime.getTime(), pendingIntent);
+            if(hitTime.getTime() > System.currentTimeMillis()) {
+                Intent intent = new Intent(this, AlarmReceiver.class);
+                intent.setAction("NOTIFICATION");
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, hitTime.getTime(), pendingIntent);
+            }
         }
     }
 }

@@ -42,7 +42,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     FloatingActionButton createSuccessBtn;
     FloatingActionButton deleteTaskBtn;
     EditText editTitle;
-    Button dateButton
+    Button dateButton;
     String dateInsert;
     Task changeTask;
 
