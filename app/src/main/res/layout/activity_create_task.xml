@@ -7,14 +7,15 @@
             type="com.ruyue.todolist.viewmodels.CreateTaskViewModel" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".view.LoginActivity"
-        android:orientation="vertical">
+        android:paddingBottom="20dp">
 
 
         <RelativeLayout
+            android:id="@+id/rel"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@color/dateBackground">
@@ -74,6 +75,8 @@
             android:layout_height="50dp"
             android:background="@null"
             android:hint="@string/title"
+            android:layout_below="@+id/rel"
+            android:layout_marginTop="20dp"
             android:paddingHorizontal="10dp"
             android:textSize="30sp"
             android:text="@={createTaskViewModel.title}"/>
@@ -84,22 +87,23 @@
             android:layout_height="100dp"
             android:background="@null"
             android:paddingHorizontal="10dp"
+            android:layout_below="@+id/title"
             android:textSize="23sp"
             android:textColor="@color/title"
             android:hint="@string/description"
             android:text="@={createTaskViewModel.description}"/>
 
-        <Button
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/create_success"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@drawable/check_selected"
-            android:layout_gravity="end"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="300dp"
-            android:enabled="false"
-            android:clickable="false"/>
+            android:src="@drawable/check_selected"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:scaleType="center"
+            android:enabled="false" />
 
-    </LinearLayout>
+    </RelativeLayout>
 </layout>
 

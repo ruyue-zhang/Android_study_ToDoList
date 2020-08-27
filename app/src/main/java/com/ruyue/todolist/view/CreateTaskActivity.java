@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.ruyue.todolist.R;
 import com.ruyue.todolist.databinding.ActivityCreateTaskBinding;
@@ -38,7 +39,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     CreateTaskViewModel createTaskViewModel;
     Calendar calendar;
     CalendarView calendarView;
-    Button createSuccessBtn;
+    FloatingActionButton createSuccessBtn;
     EditText editTitle;
     String dateInsert;
 

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.AndroidViewModel;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ruyue.todolist.R;
 import com.ruyue.todolist.models.LocalDataSource;
 import com.ruyue.todolist.models.Task;
@@ -124,7 +125,7 @@ public class CreateTaskViewModel extends AndroidViewModel {
         this.date.set(date);
     }
 
-    public void inputNotEmpty(EditText inputTitle, Button createBtn) {
+    public void inputNotEmpty(EditText inputTitle, FloatingActionButton createBtn) {
         TextWatcher watcherTitle = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -148,7 +149,7 @@ public class CreateTaskViewModel extends AndroidViewModel {
         inputTitle.addTextChangedListener(watcherTitle);
     }
 
-    public void dateNotEmpty(Button dateButton, Button createBtn, Button dateBtn) {
+    public void dateNotEmpty(Button dateButton, FloatingActionButton createBtn, Button dateBtn) {
         TextWatcher watcherDate = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
