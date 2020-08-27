@@ -19,6 +19,7 @@ public class CreateTaskViewModel extends AndroidViewModel {
     private final Context mContext;
     public static Boolean isChange = false;
     private int changeId;
+    private String insertDateFormat;
 
     public LocalDataSource localDataSource;
 
@@ -44,6 +45,7 @@ public class CreateTaskViewModel extends AndroidViewModel {
         description.set(changeTask.getDescription());
         isFinished.set(changeTask.getFinished());
         isAlert.set(changeTask.getAlert());
+        insertDateFormat = changeTask.getDate();
         String[] split = changeTask.getDate().split("-");
         String dateString = split[0] + "Äê" + split[1] + "ÔÂ" + split[2] + "ÈÕ";
         date.set(dateString);
@@ -109,7 +111,7 @@ public class CreateTaskViewModel extends AndroidViewModel {
 
     public void insertToRoom(String dateInsert) {
         if(isChange) {
-            Task task = new Task(changeId, title.get(), description.get(), isFinished.get(), isAlert.get(), dateInsert == null ? date.get() : dateInsert);
+            Task task = new Task(changeId, title.get(), description.get(), isFinished.get(), isAlert.get(), dateInsert == null ? insertDateFormat : dateInsert);
             new Thread(() -> localDataSource.taskDao().updateTask(task)).start();
         } else {
             Task task = new Task(title.get(), description.get(), isFinished.get(), isAlert.get(), dateInsert);
