@@ -3,10 +3,14 @@ package com.ruyue.todolist.view;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.ActionBar;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -25,26 +29,32 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.ruyue.todolist.R;
+import com.ruyue.todolist.Utils.AlarmUtil;
 import com.ruyue.todolist.databinding.ActivityCreateTaskBinding;
 import com.ruyue.todolist.models.LocalDataSource;
 import com.ruyue.todolist.models.Task;
 import com.ruyue.todolist.viewmodels.CreateTaskViewModel;
 import com.ruyue.todolist.viewmodels.LoginViewModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 public class CreateTaskActivity extends AppCompatActivity {
-    CreateTaskViewModel createTaskViewModel;
-    Calendar calendar;
-    CalendarView calendarView;
-    FloatingActionButton createSuccessBtn;
-    FloatingActionButton deleteTaskBtn;
-    EditText editTitle;
-    Button dateButton;
-    String dateInsert;
-    Task changeTask;
+    private CreateTaskViewModel createTaskViewModel;
+    private Calendar calendar;
+    private CalendarView calendarView;
+    private FloatingActionButton createSuccessBtn;
+    private FloatingActionButton deleteTaskBtn;
+    private EditText editTitle;
+    private Button dateButton;
+    private String dateInsert;
+    private Task changeTask;
+    private MyNotification myNotification;
+    private AlarmUtil alarmUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +62,15 @@ public class CreateTaskActivity extends AppCompatActivity {
         createTaskViewModel = ViewModelProviders.of(this).get(CreateTaskViewModel.class);
         ActivityCreateTaskBinding binding = DataBindingUtil.setContentView(CreateTaskActivity.this, R.layout.activity_create_task);
 
+        alarmUtil = new AlarmUtil();
         binding.setLifecycleOwner(this);
         binding.setCreateTaskViewModel(createTaskViewModel);
         getSupportActionBar().setElevation(0);
         Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(getResources().getColor(R.color.btn_text_color), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+        myNotification = new MyNotification(this);
 
         editTitle = findViewById(R.id.title);
         dateButton = findViewById(R.id.date);
@@ -68,13 +81,18 @@ public class CreateTaskActivity extends AppCompatActivity {
         createTaskViewModel.dateNotEmpty(dateButton, createSuccessBtn);
 
         createSuccessBtn.setOnClickListener(v -> {
-            createTaskViewModel.insertToRoom(dateInsert);
+            Task newTask = createTaskViewModel.insertToRoom(dateInsert);
+
             jumpToMainPageWithData();
         });
 
         deleteTaskBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //如果是有提醒未完成的任务，删除的时候通知删除提醒
+                if(!changeTask.getFinished() && changeTask.getAlert()) {
+                    alarmUtil.cancelNotificationById(changeTask.getId());
+                }
                 createTaskViewModel.deleteFromRoom(changeTask);
                 jumpToMainPageWithData();
             }

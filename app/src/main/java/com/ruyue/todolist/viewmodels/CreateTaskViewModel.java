@@ -1,9 +1,13 @@
 package com.ruyue.todolist.viewmodels;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -13,14 +17,24 @@ import androidx.lifecycle.AndroidViewModel;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ruyue.todolist.R;
+import com.ruyue.todolist.Utils.AlarmUtil;
 import com.ruyue.todolist.models.LocalDataSource;
 import com.ruyue.todolist.models.Task;
+import com.ruyue.todolist.view.AlarmReceiver;
+import com.ruyue.todolist.view.MyNotification;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CreateTaskViewModel extends AndroidViewModel {
     private final Context mContext;
     public static Boolean isChange = false;
     private int changeId;
     private String insertDateFormat;
+    private Task task;
+    private MyNotification myNotification;
+    private AlarmUtil alarmUtil;
 
     public LocalDataSource localDataSource;
 
@@ -36,7 +50,9 @@ public class CreateTaskViewModel extends AndroidViewModel {
     public CreateTaskViewModel(@NonNull Application application) {
         super(application);
         this.mContext = application.getApplicationContext();
+        this.myNotification = new MyNotification(mContext);
         localDataSource = LocalDataSource.getInstance(this.mContext);
+        alarmUtil = new AlarmUtil();
         date.set("日期");
     }
 
@@ -110,15 +126,27 @@ public class CreateTaskViewModel extends AndroidViewModel {
         this.date = date;
     }
 
-    public void insertToRoom(String dateInsert) {
+    public Task insertToRoom(String dateInsert) {
         if(isChange) {
-            Task task = new Task(changeId, title.get(), description.get(), isFinished.get(), isAlert.get(), dateInsert == null ? insertDateFormat : dateInsert);
+            task = new Task(changeId, title.get(), description.get(), isFinished.get(), isAlert.get(), dateInsert == null ? insertDateFormat : dateInsert);
             new Thread(() -> localDataSource.taskDao().updateTask(task)).start();
         } else {
-            Task task = new Task(title.get(), description.get(), isFinished.get(), isAlert.get(), dateInsert);
-            new Thread(() -> localDataSource.taskDao().insertTask(task)).start();
+            task = new Task(title.get(), description.get(), isFinished.get(), isAlert.get(), dateInsert);
+            String title = task.getTitle();
+            String date = task.getDate();
+            new Thread(() -> {
+                localDataSource.taskDao().insertTask(task);
+                task = localDataSource.taskDao().getTaskByTitleAndDate(title, date);
+                if(!task.getFinished() && task.getAlert()) {
+                    //修改或新增有添加提醒并未完成的任务，添加提醒
+                    alarmUtil.addNotification(task.getId(), task.getTitle(), task.getDate());
+                    Log.d("--------------", "添加notification");
+                } else {
+                    alarmUtil.cancelNotificationById(task.getId());
+                }
+            }).start();
         }
-
+        return task;
     }
 
     public void getDateFromCalendar(String date) {

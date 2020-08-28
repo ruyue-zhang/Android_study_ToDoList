@@ -26,4 +26,7 @@ public interface TaskDao {
 
     @Query("SELECT * FROM task WHERE id = :id")
     Task getTaskById(int id);
+
+    @Query("SELECT * FROM task WHERE title = :title AND date = :date")
+    Task getTaskByTitleAndDate(String title, String date);
 }

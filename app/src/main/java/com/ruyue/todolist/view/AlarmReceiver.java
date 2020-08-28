@@ -15,8 +15,10 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (Objects.equals(intent.getAction(), "NOTIFICATION")) {
+            String title = intent.getStringExtra("title");
+            int id = intent.getIntExtra("id", 0);
             MyNotification myNotification = new MyNotification(context);
-            myNotification.sendNotification(context);
+            myNotification.sendNotification(context, title, id);
         }
     }
 }

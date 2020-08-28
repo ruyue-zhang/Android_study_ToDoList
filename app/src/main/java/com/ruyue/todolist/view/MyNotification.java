@@ -13,8 +13,6 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.ruyue.todolist.R;
 
-import java.util.Calendar;
-
 public class MyNotification {
     public static final int NOTIFY_ID = 1;
     private NotificationManagerCompat notificationManager;
@@ -25,7 +23,7 @@ public class MyNotification {
         this.notificationManager = NotificationManagerCompat.from(context);
     }
 
-    public void sendNotification(Context context) {
+    public void sendNotification(Context context, String title, int id) {
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(notificationChannel);
@@ -35,17 +33,16 @@ public class MyNotification {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         Notification notification = builder.setSmallIcon(R.drawable.todo_list_logo)
                 .setWhen(System.currentTimeMillis())
-                .setContentTitle("ToDoList")
-                .setContentText("今天还有任务未完成呦~")
+                .setContentTitle("【任务】" + title)
+                .setContentText("今天还未完成呦~")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .build();
-        notificationManager.notify(NOTIFY_ID, notification);
+        notificationManager.notify(id, notification);
     }
 
-    public void cancelAllNotification() {
-        notificationManager.cancelAll();
+    public void cancelNotificationById(int id) {
+        notificationManager.cancel(id);
     }
-
 }

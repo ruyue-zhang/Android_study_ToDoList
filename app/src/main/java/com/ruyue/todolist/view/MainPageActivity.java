@@ -40,21 +40,22 @@ public class MainPageActivity extends AppCompatActivity {
     private LocalDataSource localDataSource;
     private MainPageViewModel mainPageViewModel;
     private TaskAdapter taskAdapter;
-    private MyNotification myNotification;
     private  List<Task> taskList;
     SharedPreferences sprfMain;
     SharedPreferences.Editor editorMain;
+    private MyNotification myNotification;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myNotification = new MyNotification(this);
+
         mainPageViewModel = ViewModelProviders.of(this).get(MainPageViewModel.class);
         ActivityMainPageBinding binding = DataBindingUtil.setContentView(MainPageActivity.this, R.layout.activity_main_page);
         binding.setLifecycleOwner(this);
         binding.setMainPageViewModel(mainPageViewModel);
         getSupportActionBar().setElevation(0);
+        myNotification = new MyNotification(this);
 
         while (taskList == null) {
             taskList = mainPageViewModel.getTaskList();
@@ -86,8 +87,6 @@ public class MainPageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        updateNotification();
     }
 
     @Override
@@ -121,32 +120,5 @@ public class MainPageActivity extends AppCompatActivity {
         editorMain = sprfMain.edit();
         editorMain.putBoolean("main",false);
         editorMain.apply();
-    }
-
-
-    public void updateNotification() {
-        List<Task> taskList = null;
-        while (taskList == null) {
-            taskList = mainPageViewModel.getTaskList();
-        }
-        myNotification.cancelAllNotification();
-        List<Task> hitTaskList = taskList.stream().filter(task -> !task.getFinished() && task.getAlert()).collect(Collectors.toList());
-        for (Task task : hitTaskList) {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String hitTimeStr = task.getDate() + " 04:39:00";
-            Date hitTime = null;
-            try {
-                hitTime = format.parse(hitTimeStr);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            if(hitTime.getTime() > System.currentTimeMillis()) {
-                Intent intent = new Intent(this, AlarmReceiver.class);
-                intent.setAction("NOTIFICATION");
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, hitTime.getTime(), pendingIntent);
-            }
-        }
     }
 }

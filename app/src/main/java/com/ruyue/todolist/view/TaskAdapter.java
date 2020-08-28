@@ -2,6 +2,7 @@ package com.ruyue.todolist.view;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.ruyue.todolist.R;
+import com.ruyue.todolist.Utils.AlarmUtil;
 import com.ruyue.todolist.models.LocalDataSource;
 import com.ruyue.todolist.models.Task;
 
@@ -22,6 +24,8 @@ public class TaskAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private LocalDataSource localDataSource;
     private Context context;
+    //private MyNotification myNotification;
+    private AlarmUtil alarmUtil;
     private MainPageActivity mainPageActivity;
 
     public TaskAdapter(Context context, List<Task> data, MainPageActivity mainPageActivity) {
@@ -30,6 +34,7 @@ public class TaskAdapter extends BaseAdapter {
         this.mainPageActivity = mainPageActivity;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         localDataSource = LocalDataSource.getInstance(context);
+        alarmUtil = new AlarmUtil();
     }
 
     static class ViewHolder {
@@ -71,32 +76,47 @@ public class TaskAdapter extends BaseAdapter {
         }
         viewHolder.title.setText(data.get(position).getTitle());
 
+        if(data.get(position).getFinished()) {
+            viewHolder.title.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            viewHolder.title.setTextColor(context.getResources().getColor(R.color.delete_text));
+        } else {
+            viewHolder.title.getPaint().setFlags(0);
+            viewHolder.title.setTextColor(context.getResources().getColor(R.color.btn_text_color));
+        }
+
         String[] dateStrList = data.get(position).getDate().split("-");
         String displayDate = dateStrList[1] + "ÔÂ" + dateStrList[2] + "ÈÕ";
         viewHolder.date.setText(displayDate);
 
-        viewHolder.isFinished.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        viewHolder.isFinished.setOnClickListener(new CompoundButton.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
                 Task task = data.get(position);
-                if (isChecked) {
+                if (!task.getFinished()) {
                     viewHolder.title.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                     viewHolder.title.setTextColor(context.getResources().getColor(R.color.delete_text));
                     task.setFinished(true);
+                    if(task.getAlert()) {
+                        alarmUtil.cancelNotificationById(task.getId());
+                    }
+                    Log.d("~~~~~~~~~~~~~~~~~~", "AdapterÉ¾³ýnotification");
                 } else {
                     viewHolder.title.getPaint().setFlags(0);
                     viewHolder.title.setTextColor(context.getResources().getColor(R.color.btn_text_color));
                     task.setFinished(false);
+                    if(task.getAlert()) {
+                        alarmUtil.addNotification(task.getId(), task.getTitle(), task.getDate());
+                        Log.d("~~~~~~~~~~~~~~~~~~", "AdapterÌí¼Ónotification");
+                    }
                 }
-                Collections.sort(data);
-                notifyDataSetChanged();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         localDataSource.taskDao().updateTask(task);
                     }
                 }).start();
-                mainPageActivity.updateNotification();
+                Collections.sort(data);
+                notifyDataSetChanged();
             }
         });
 
