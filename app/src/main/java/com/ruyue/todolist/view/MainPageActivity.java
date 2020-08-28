@@ -30,6 +30,7 @@ import com.ruyue.todolist.viewmodels.MainPageViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +41,7 @@ public class MainPageActivity extends AppCompatActivity {
     private MainPageViewModel mainPageViewModel;
     private TaskAdapter taskAdapter;
     private MyNotification myNotification;
-    private List<Task> taskList;
+    private  List<Task> taskList;
     SharedPreferences sprfMain;
     SharedPreferences.Editor editorMain;
 
@@ -60,7 +61,7 @@ public class MainPageActivity extends AppCompatActivity {
         }
         Collections.sort(taskList);
         ListView listViewTask = findViewById(R.id.task_list_view);
-        taskAdapter = new TaskAdapter(MainPageActivity.this, taskList);
+        taskAdapter = new TaskAdapter(MainPageActivity.this, taskList, this);
         listViewTask.setAdapter(taskAdapter);
 
         listViewTask.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -85,6 +86,7 @@ public class MainPageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         updateNotification();
     }
 
@@ -122,12 +124,16 @@ public class MainPageActivity extends AppCompatActivity {
     }
 
 
-    private void updateNotification() {
+    public void updateNotification() {
+        List<Task> taskList = null;
+        while (taskList == null) {
+            taskList = mainPageViewModel.getTaskList();
+        }
         myNotification.cancelAllNotification();
         List<Task> hitTaskList = taskList.stream().filter(task -> !task.getFinished() && task.getAlert()).collect(Collectors.toList());
         for (Task task : hitTaskList) {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String hitTimeStr = task.getDate() + " 19:22:00";
+            String hitTimeStr = task.getDate() + " 04:39:00";
             Date hitTime = null;
             try {
                 hitTime = format.parse(hitTimeStr);

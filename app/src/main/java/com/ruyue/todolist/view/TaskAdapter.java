@@ -20,17 +20,19 @@ import java.util.List;
 public class TaskAdapter extends BaseAdapter {
     private List<Task> data;
     private LayoutInflater layoutInflater;
-    LocalDataSource localDataSource;
-    Context context;
+    private LocalDataSource localDataSource;
+    private Context context;
+    private MainPageActivity mainPageActivity;
 
-    public TaskAdapter(Context context, List<Task> data) {
+    public TaskAdapter(Context context, List<Task> data, MainPageActivity mainPageActivity) {
         this.context = context;
         this.data = data;
+        this.mainPageActivity = mainPageActivity;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         localDataSource = LocalDataSource.getInstance(context);
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         CheckBox isFinished;
         TextView title;
         TextView date;
@@ -80,7 +82,6 @@ public class TaskAdapter extends BaseAdapter {
                 if (isChecked) {
                     viewHolder.title.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                     viewHolder.title.setTextColor(context.getResources().getColor(R.color.delete_text));
-                    Collections.sort(data);
                     task.setFinished(true);
                 } else {
                     viewHolder.title.getPaint().setFlags(0);
@@ -95,6 +96,7 @@ public class TaskAdapter extends BaseAdapter {
                         localDataSource.taskDao().updateTask(task);
                     }
                 }).start();
+                mainPageActivity.updateNotification();
             }
         });
 

@@ -16,7 +16,7 @@ import com.ruyue.todolist.R;
 import java.util.Calendar;
 
 public class MyNotification {
-    public static final int NOTIFY_ID = 3;
+    public static final int NOTIFY_ID = 1;
     private NotificationManagerCompat notificationManager;
     private static final String CHANNEL_ID = "messageReminding";
     private static final String CHANNEL_NAME = "noFinishHit";
@@ -34,7 +34,7 @@ public class MyNotification {
         Intent intent = new Intent(context, MainPageActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         Notification notification = builder.setSmallIcon(R.drawable.todo_list_logo)
-                .setWhen(Calendar.getInstance().getTimeInMillis())
+                .setWhen(System.currentTimeMillis())
                 .setContentTitle("ToDoList")
                 .setContentText("今天还有任务未完成呦~")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
