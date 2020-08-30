@@ -24,14 +24,11 @@ public class TaskAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private LocalDataSource localDataSource;
     private Context context;
-    //private MyNotification myNotification;
     private AlarmUtil alarmUtil;
-    private MainPageActivity mainPageActivity;
 
-    public TaskAdapter(Context context, List<Task> data, MainPageActivity mainPageActivity) {
+    public TaskAdapter(Context context, List<Task> data) {
         this.context = context;
         this.data = data;
-        this.mainPageActivity = mainPageActivity;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         localDataSource = LocalDataSource.getInstance(context);
         alarmUtil = new AlarmUtil();
@@ -88,36 +85,26 @@ public class TaskAdapter extends BaseAdapter {
         String displayDate = dateStrList[1] + "ÔÂ" + dateStrList[2] + "ÈÕ";
         viewHolder.date.setText(displayDate);
 
-        viewHolder.isFinished.setOnClickListener(new CompoundButton.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Task task = data.get(position);
-                if (!task.getFinished()) {
-                    viewHolder.title.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                    viewHolder.title.setTextColor(context.getResources().getColor(R.color.delete_text));
-                    task.setFinished(true);
-                    if(task.getAlert()) {
-                        alarmUtil.cancelNotificationById(task.getId());
-                    }
-                    Log.d("~~~~~~~~~~~~~~~~~~", "AdapterÉ¾³ýnotification");
-                } else {
-                    viewHolder.title.getPaint().setFlags(0);
-                    viewHolder.title.setTextColor(context.getResources().getColor(R.color.btn_text_color));
-                    task.setFinished(false);
-                    if(task.getAlert()) {
-                        alarmUtil.addNotification(task.getId(), task.getTitle(), task.getDate());
-                        Log.d("~~~~~~~~~~~~~~~~~~", "AdapterÌí¼Ónotification");
-                    }
+        viewHolder.isFinished.setOnClickListener(v -> {
+            Task task = data.get(position);
+            if (!task.getFinished()) {
+                viewHolder.title.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                viewHolder.title.setTextColor(context.getResources().getColor(R.color.delete_text));
+                task.setFinished(true);
+                if(task.getAlert()) {
+                    alarmUtil.cancelNotificationById(task.getId());
                 }
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        localDataSource.taskDao().updateTask(task);
-                    }
-                }).start();
-                Collections.sort(data);
-                notifyDataSetChanged();
+            } else {
+                viewHolder.title.getPaint().setFlags(0);
+                viewHolder.title.setTextColor(context.getResources().getColor(R.color.btn_text_color));
+                task.setFinished(false);
+                if(task.getAlert()) {
+                    alarmUtil.addNotification(task.getId(), task.getTitle(), task.getDate());
+                }
             }
+            new Thread(() -> localDataSource.taskDao().updateTask(task)).start();
+            Collections.sort(data);
+            notifyDataSetChanged();
         });
 
         viewHolder.isFinished.setChecked(data.get(position).getFinished());

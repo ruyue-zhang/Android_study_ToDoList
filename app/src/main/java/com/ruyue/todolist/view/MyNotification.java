@@ -14,7 +14,6 @@ import androidx.core.app.NotificationManagerCompat;
 import com.ruyue.todolist.R;
 
 public class MyNotification {
-    public static final int NOTIFY_ID = 1;
     private NotificationManagerCompat notificationManager;
     private static final String CHANNEL_ID = "messageReminding";
     private static final String CHANNEL_NAME = "noFinishHit";

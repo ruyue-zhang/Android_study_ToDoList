@@ -1,5 +1,6 @@
 package com.ruyue.todolist.Utils;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -27,8 +28,9 @@ public class AlarmUtil {
     }
 
     public void addNotification(int id, String title, String date) {
+        @SuppressLint("SimpleDateFormat")
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String hitTimeStr = date + " 01:06:00";
+        String hitTimeStr = date + " 06:30:30";
         Date hitTime = null;
         try {
             hitTime = format.parse(hitTimeStr);

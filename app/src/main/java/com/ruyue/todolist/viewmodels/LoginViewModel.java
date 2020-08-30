@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import java.util.Objects;
 
 import okhttp3.Call;
@@ -174,8 +173,4 @@ public class LoginViewModel extends AndroidViewModel {
         //serviceUser.setLoginStatus(true);
         //insertUserInRoom(serviceUser);
     }
-
-//    public void insertUserInRoom(User user) {
-//        userDao.insertUser(user);
-//    }
 }

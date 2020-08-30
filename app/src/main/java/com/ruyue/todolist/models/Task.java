@@ -1,9 +1,13 @@
 package com.ruyue.todolist.models;
 
+import android.annotation.SuppressLint;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -94,6 +98,7 @@ public class Task implements Comparable<Task> {
         this.date = date;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "Task{" +
@@ -108,10 +113,10 @@ public class Task implements Comparable<Task> {
 
     @Override
     public int compareTo(Task task) {
+        @SuppressLint("SimpleDateFormat")
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date dateString = null;
-        Date date1 = null;
-        Date date2 = null;
+        Date date1;
+        Date date2;
         int compareTo = 0;
         if(this.getFinished() ^ task.getFinished()) {
             return task.getFinished() ? -1 : 1;

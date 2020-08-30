@@ -6,9 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,20 +21,13 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 import com.ruyue.todolist.R;
 import com.ruyue.todolist.databinding.ActivityMainPageBinding;
-import com.ruyue.todolist.models.LocalDataSource;
 import com.ruyue.todolist.models.Task;
 import com.ruyue.todolist.viewmodels.MainPageViewModel;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MainPageActivity extends AppCompatActivity {
-    private LocalDataSource localDataSource;
     private MainPageViewModel mainPageViewModel;
     private TaskAdapter taskAdapter;
     private  List<Task> taskList;
@@ -62,30 +52,22 @@ public class MainPageActivity extends AppCompatActivity {
         }
         Collections.sort(taskList);
         ListView listViewTask = findViewById(R.id.task_list_view);
-        taskAdapter = new TaskAdapter(MainPageActivity.this, taskList, this);
+        taskAdapter = new TaskAdapter(MainPageActivity.this, taskList);
         listViewTask.setAdapter(taskAdapter);
 
-        listViewTask.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                Adapter adapter = parent.getAdapter();
-                Task task = (Task) adapter.getItem(position);
-                Intent intent = new Intent(MainPageActivity.this, CreateTaskActivity.class);
-                intent.putExtra("changeTask", new Gson().toJson(task));
-                intent.putExtra("flag",true);
-                startActivity(intent);
-            }
+        listViewTask.setOnItemClickListener((parent, view, position, id) -> {
+            Adapter adapter = parent.getAdapter();
+            Task task = (Task) adapter.getItem(position);
+            Intent intent = new Intent(MainPageActivity.this, CreateTaskActivity.class);
+            intent.putExtra("changeTask", new Gson().toJson(task));
+            intent.putExtra("flag",true);
+            startActivity(intent);
         });
 
-        findViewById(R.id.jump_to_create).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainPageActivity.this, CreateTaskActivity.class);
-                intent.putExtra("flag",false);
-                startActivity(intent);
-            }
+        findViewById(R.id.jump_to_create).setOnClickListener(v -> {
+            Intent intent = new Intent(MainPageActivity.this, CreateTaskActivity.class);
+            intent.putExtra("flag",false);
+            startActivity(intent);
         });
     }
 
