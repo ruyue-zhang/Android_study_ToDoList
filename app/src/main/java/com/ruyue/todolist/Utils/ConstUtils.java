@@ -16,4 +16,6 @@ public class ConstUtils {
     public static final int ADD_RESULT_CODE = 1;
     public static final int CHANGE_REQUEST_CODE = 2;
     public static final int CHANGE_RESULT_CODE = 3;
+    public static final String CHANGE_TASK_KEY= "changeTask";
+    public static final String ADD_OR_CHANGE = "flag";
 }

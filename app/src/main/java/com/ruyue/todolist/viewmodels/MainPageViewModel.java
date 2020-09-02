@@ -1,7 +1,6 @@
 package com.ruyue.todolist.viewmodels;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -59,7 +58,6 @@ public class MainPageViewModel extends AndroidViewModel {
             Collections.sort(taskList);
         }).start();
         return taskList;
-
     }
 
     public void displayHeadInfo(List<Task> taskList) {
@@ -67,21 +65,17 @@ public class MainPageViewModel extends AndroidViewModel {
 
         long time = System.currentTimeMillis();
         Date date = new Date(time);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss EEEE");
-        format = new SimpleDateFormat("MMMM", Locale.US);
-        curMonth.set(format.format(date));
-        format = new SimpleDateFormat("EEEE", Locale.US);
-        String week = format.format(date);
-        format = new SimpleDateFormat("dd");
-        String day = format.format(date);
+        curMonth.set(new SimpleDateFormat("MMMM", Locale.US).format(date));
+        String week = new SimpleDateFormat("EEEE", Locale.US).format(date);
+        String day = new SimpleDateFormat("dd", Locale.US).format(date);
         switch (day) {
-            case "1":
+            case "01":
                 curDate.set(week + ", First");
                 break;
-            case "2":
+            case "02":
                 curDate.set(week + ", Second");
                 break;
-            case "3":
+            case "03":
                 curDate.set(week + ", Third");
                 break;
             default:

@@ -11,14 +11,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
-import android.view.View;
 import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,17 +25,12 @@ import com.ruyue.todolist.databinding.ActivityMainPageBinding;
 import com.ruyue.todolist.models.Task;
 import com.ruyue.todolist.viewmodels.MainPageViewModel;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
-import butterknife.BindArray;
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
 
 public class MainPageActivity extends AppCompatActivity {
     private List<Task> taskList = null;
@@ -84,14 +75,14 @@ public class MainPageActivity extends AppCompatActivity {
 
     private void jumpToCreateTask() {
         Intent intent = new Intent(MainPageActivity.this, CreateTaskActivity.class);
-        intent.putExtra("flag", false);
+        intent.putExtra(ConstUtils.ADD_OR_CHANGE, false);
         startActivityForResult(intent, ConstUtils.ADD_REQUEST_CODE);
     }
 
-    private void jumpToChangeTask(String key, String value) {
+    private void jumpToChangeTask(String value) {
         Intent intent = new Intent(MainPageActivity.this, CreateTaskActivity.class);
-        intent.putExtra(key, value);
-        intent.putExtra("flag", true);
+        intent.putExtra(ConstUtils.CHANGE_TASK_KEY, value);
+        intent.putExtra(ConstUtils.ADD_OR_CHANGE, true);
         startActivityForResult(intent, ConstUtils.CHANGE_REQUEST_CODE);
     }
 
@@ -103,17 +94,17 @@ public class MainPageActivity extends AppCompatActivity {
         listViewTask.setOnItemClickListener((parent, view, position, id) -> {
             Adapter adapter = parent.getAdapter();
             Task task = (Task) adapter.getItem(position);
-            jumpToChangeTask("changeTask", new Gson().toJson(task));
+            jumpToChangeTask(new Gson().toJson(task));
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == ConstUtils.ADD_REQUEST_CODE && resultCode == ConstUtils.ADD_RESULT_CODE) {
-            //刷新界面
-        } else if(requestCode == ConstUtils.CHANGE_REQUEST_CODE && resultCode == ConstUtils.CHANGE_RESULT_CODE) {
-
-        }
+//        if(requestCode == ConstUtils.ADD_REQUEST_CODE && resultCode == ConstUtils.ADD_RESULT_CODE) {
+//            //刷新界面
+//        } else if(requestCode == ConstUtils.CHANGE_REQUEST_CODE && resultCode == ConstUtils.CHANGE_RESULT_CODE) {
+//
+//        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
