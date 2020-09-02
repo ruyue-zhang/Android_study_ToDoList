@@ -19,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.ruyue.todolist.R;
 import com.ruyue.todolist.Utils.AlarmUtil;
+import com.ruyue.todolist.Utils.ConstUtils;
 import com.ruyue.todolist.databinding.ActivityCreateTaskBinding;
 import com.ruyue.todolist.models.Task;
 import com.ruyue.todolist.viewmodels.CreateTaskViewModel;
@@ -26,11 +27,56 @@ import com.ruyue.todolist.viewmodels.CreateTaskViewModel;
 import java.util.Calendar;
 import java.util.Objects;
 
+import butterknife.BindDrawable;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnTextChanged;
+
 public class CreateTaskActivity extends AppCompatActivity {
     private CreateTaskViewModel createTaskViewModel;
     private String dateInsert;
     private Task changeTask;
     private AlarmUtil alarmUtil;
+    private Boolean isTitleNotEmpty = false;
+    private Boolean isDateNotEmpty = false;
+
+    @BindView(R.id.title)
+    EditText editTitle;
+    @BindView(R.id.date)
+    Button dateButton;
+    @BindView(R.id.create_success)
+    FloatingActionButton createSuccessBtn;
+    @BindView(R.id.delete_task)
+    FloatingActionButton deleteTaskBtn;
+    @BindDrawable(R.drawable.abc_ic_ab_back_material)
+    Drawable backBtn;
+
+    @OnClick(R.id.date)
+    public void onDateClick() {
+        openCalendarDialog();
+    }
+
+    @OnClick(R.id.create_success)
+    public void onSuccessClick() {
+        createTaskViewModel.insertToRoom(dateInsert);
+        jumpToMainPageWithData();
+    }
+
+    @OnClick(R.id.delete_task)
+    public void onDeleteClick() {
+        if(!changeTask.getFinished() && changeTask.getAlert()) {
+            alarmUtil.cancelNotificationById(changeTask.getId());
+        }
+        createTaskViewModel.deleteFromRoom(changeTask);
+        jumpToMainPageWithData();
+    }
+
+    @OnTextChanged(R.id.title)
+    public void onTitleChange() {
+        isTitleNotEmpty = editTitle.getText().toString().length() > 0;
+        changeSaveBtnStatus();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,56 +85,33 @@ public class CreateTaskActivity extends AppCompatActivity {
         ActivityCreateTaskBinding binding = DataBindingUtil.setContentView(CreateTaskActivity.this, R.layout.activity_create_task);
         binding.setLifecycleOwner(this);
         binding.setCreateTaskViewModel(createTaskViewModel);
+        ButterKnife.bind(this);
 
         alarmUtil = new AlarmUtil();
 
         Objects.requireNonNull(getSupportActionBar()).setElevation(0);
-        Drawable upArrow = getDrawable(R.drawable.abc_ic_ab_back_material);
+        Drawable upArrow = backBtn;
         if(upArrow != null) {
             upArrow.setColorFilter(getColor(R.color.btn_text_color), PorterDuff.Mode.SRC_ATOP);
             getSupportActionBar().setHomeAsUpIndicator(upArrow);
         }
 
-        EditText editTitle = findViewById(R.id.title);
-        Button dateButton = findViewById(R.id.date);
-        FloatingActionButton createSuccessBtn = findViewById(R.id.create_success);
-        FloatingActionButton deleteTaskBtn = findViewById(R.id.delete_task);
-
-        createTaskViewModel.inputNotEmpty(editTitle, createSuccessBtn);
-        createTaskViewModel.dateNotEmpty(dateButton, createSuccessBtn);
-
-        createSuccessBtn.setOnClickListener(v -> {
-            createTaskViewModel.insertToRoom(dateInsert);
-            jumpToMainPageWithData();
-        });
-
-        deleteTaskBtn.setOnClickListener(v -> {
-            if(!changeTask.getFinished() && changeTask.getAlert()) {
-                alarmUtil.cancelNotificationById(changeTask.getId());
-            }
-            createTaskViewModel.deleteFromRoom(changeTask);
-            jumpToMainPageWithData();
-        });
-
-        findViewById(R.id.date).setOnClickListener(v -> openCalendarDialog());
-
-
         Intent intent = getIntent();
-        if(intent.getBooleanExtra("flag", true)) {
-            String changeTaskString = intent.getStringExtra("changeTask");
+        if(intent.getBooleanExtra(ConstUtils.ADD_OR_CHANGE, true)) {
+            String changeTaskString = intent.getStringExtra(ConstUtils.CHANGE_TASK_KEY);
             changeTask = new Gson().fromJson(changeTaskString, Task.class);
             createTaskViewModel.initInterface(changeTask);
             CreateTaskViewModel.isChange = true;
+            isDateNotEmpty = true;
             deleteTaskBtn.setEnabled(true);
+            createSuccessBtn.setEnabled(true);
             deleteTaskBtn.setVisibility(View.VISIBLE);
         } else {
+            CreateTaskViewModel.isChange = false;
             deleteTaskBtn.setEnabled(false);
             deleteTaskBtn.setVisibility(View.INVISIBLE);
-            CreateTaskViewModel.isChange = false;
         }
     }
-
-
 
     public void jumpToMainPageWithData() {
         Intent intent = new Intent(CreateTaskActivity.this, MainPageActivity.class);
@@ -107,6 +130,8 @@ public class CreateTaskActivity extends AppCompatActivity {
         calendar.add(Calendar.YEAR, 1);
         CalendarView calendarView1 = customView.findViewById(R.id.calendarView);
         calendarView1.setOnDateChangeListener((calendarView, year, month, day) -> {
+            isDateNotEmpty = true;
+            changeSaveBtnStatus();
             dateInsert = year + "-" + (month + 1) + "-" + day;
             String date = year + "Äê" + (month +1) + "ÔÂ" + day + "ÈÕ";
             createTaskViewModel.getDateFromCalendar(date);
@@ -114,5 +139,13 @@ public class CreateTaskActivity extends AppCompatActivity {
         });
         dialog.setView(customView);
         dialog.show();
+    }
+
+    private void changeSaveBtnStatus() {
+        if(isTitleNotEmpty && isDateNotEmpty) {
+            createSuccessBtn.setEnabled(true);
+        } else {
+            createSuccessBtn.setEnabled(false);
+        }
     }
 }
