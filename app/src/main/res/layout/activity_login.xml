@@ -62,6 +62,7 @@
             android:background="@drawable/login_btn_layout"
             android:textAllCaps="false"
             android:stateListAnimator="@null"
+            android:enabled="true"
             tools:ignore="SpUsage" />
 
     </LinearLayout>

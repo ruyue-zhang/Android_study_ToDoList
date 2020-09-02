@@ -13,6 +13,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import com.google.gson.Gson;
 import com.ruyue.todolist.R;
+import com.ruyue.todolist.Utils.ConstUtils;
 import com.ruyue.todolist.models.User;
 
 
@@ -23,6 +24,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -34,22 +36,11 @@ public class LoginViewModel extends AndroidViewModel {
     private final Context mContext;
     private ObservableField<String> name = new ObservableField<>();
     private ObservableField<String> password = new ObservableField<>();
-    private Boolean inputNameLegal = false;
-    private Boolean inputPasswordLegal = false;
-    private static final String URL = "https://twc-android-bootcamp.github.io/fake-data/data/user.json";
     private User serviceUser;
-    private static final int SUCCESS = 0;
-    private static final int PASSWORD_ERROR = 1;
-    private static final int NAME_NOT_EXIST = 2;
-//    private LocalDataSource userDb;
-//    private UserDao userDao;
-
 
     public LoginViewModel(@NonNull Application mContext) {
         super(mContext);
         this.mContext = mContext.getApplicationContext();
-//        userDb = LocalDataSource.getInstance(mContext);
-//        userDao = userDb.userDao();
     }
 
     public ObservableField<String> getName() {
@@ -72,75 +63,21 @@ public class LoginViewModel extends AndroidViewModel {
 
         if (inputName.equals(serviceUser.getName())) {
             if(md5Password.equals(serviceUser.getPassword())) {
-                return SUCCESS;
+                return ConstUtils.SUCCESS;
             } else {
-                return PASSWORD_ERROR;
+                return ConstUtils.PASSWORD_ERROR;
             }
         } else {
-            return NAME_NOT_EXIST;
+            return ConstUtils.NAME_NOT_EXIST;
         }
     }
-
-    public void judgeNameIsLegal(EditText editTextName, Button loginBtn) {
-        TextWatcher watcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (name.get().length() > 0) {
-                    if(!name.get().matches("^[a-zA-Z0-9]{3,12}$")) {
-                        editTextName.setError("用户名必须是3 ~ 12为字母或数字");
-                        inputNameLegal = false;
-                        loginBtnDisable(loginBtn);
-                    } else {
-                        inputNameLegal = true;
-                        if(inputPasswordLegal) {
-                            loginBtnEnable(loginBtn);
-                        }
-                    }
-                }
-            }
-        };
-        editTextName.addTextChangedListener(watcher);
-    }
-
-    public void judgePasswordIsLegal(EditText editTextPassword, Button loginBtn) {
-        TextWatcher watcherPassword = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (password.get().length() > 0) {
-                    if(!password.get().matches("^.{6,18}$")) {
-                        editTextPassword.setError("密码长度必须是6 ~ 18位字符");
-                        inputPasswordLegal = false;
-                        loginBtnDisable(loginBtn);
-                    } else {
-                        inputPasswordLegal = true;
-                        if(inputNameLegal) {
-                            loginBtnEnable(loginBtn);
-                        }
-                    }
-                }
-            }
-        };
-        editTextPassword.addTextChangedListener(watcherPassword);
-    }
-
-    private void loginBtnEnable(Button loginBtn) {
-        loginBtn.setEnabled(true);
-        loginBtn.setTextColor(mContext.getResources().getColor(R.color.btn_enable_text_color));
-        loginBtn.setBackground(mContext.getResources().getDrawable(R.drawable.login_btn_enable, null));
-    }
-
-    private void loginBtnDisable(Button loginBtn) {
-        loginBtn.setEnabled(false);
-        loginBtn.setTextColor(mContext.getResources().getColor(R.color.btn_text_color));
-        loginBtn.setBackground(mContext.getResources().getDrawable(R.drawable.login_btn_layout, null));
+    public Boolean isInputLegal(EditText inputView, String namePattern, String errorInfo) {
+        if(inputView.getText().toString().matches(namePattern)) {
+            return true;
+        } else {
+            inputView.setError(errorInfo);
+            return false;
+        }
     }
 
     public static String getMD5(String str) throws NoSuchAlgorithmException {
@@ -150,7 +87,7 @@ public class LoginViewModel extends AndroidViewModel {
     }
 
     public void getUserInfo() {
-        final Request request = new Request.Builder().url(URL).build();
+        final Request request = new Request.Builder().url(ConstUtils.URL).build();
         OkHttpClient okHttpClient = new OkHttpClient();
         Call call = okHttpClient.newCall(request);
 
@@ -170,7 +107,5 @@ public class LoginViewModel extends AndroidViewModel {
     public void jsonStringToUserList(String result) {
         Gson gson = new Gson();
         serviceUser = gson.fromJson(result, User.class);
-        //serviceUser.setLoginStatus(true);
-        //insertUserInRoom(serviceUser);
     }
 }

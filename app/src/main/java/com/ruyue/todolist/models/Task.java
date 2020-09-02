@@ -17,15 +17,10 @@ import java.util.Date;
 public class Task implements Comparable<Task> {
     @PrimaryKey(autoGenerate = true)
     private int id;
-    @ColumnInfo(name = "title")
     private String title;
-    @ColumnInfo(name = "description")
     private String description;
-    @ColumnInfo(name = "is_finished")
     private Boolean isFinished;
-    @ColumnInfo(name = "is_alert")
     private Boolean isAlert;
-    @ColumnInfo(name = "date")
     private String date;
 
     @Ignore

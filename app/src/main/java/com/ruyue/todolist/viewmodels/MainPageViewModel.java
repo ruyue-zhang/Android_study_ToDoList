@@ -60,21 +60,23 @@ public class MainPageViewModel extends AndroidViewModel {
             }
         }).start();
         if (taskList != null) {
-            taskCount.set(taskList.size() + "个任务");
-
-            long time = System.currentTimeMillis();
-            Date date = new Date(time);
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss EEEE");
-            format = new SimpleDateFormat("MMMM", Locale.US);
-            curMonth.set(format.format(date));
-            format = new SimpleDateFormat("EEEE", Locale.US);
-            String week = format.format(date);
-            format = new SimpleDateFormat("dd");
-            String day = format.format(date);
-            curDate.set(week + ", " + day + "th");
-            format = new SimpleDateFormat("HH:mm:ss");
-            Log.d("----------------------", format.format(date));
+            displayHeadInfo();
         }
         return taskList;
+    }
+
+    private void displayHeadInfo() {
+        taskCount.set(taskList.size() + "个任务");
+
+        long time = System.currentTimeMillis();
+        Date date = new Date(time);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss EEEE");
+        format = new SimpleDateFormat("MMMM", Locale.US);
+        curMonth.set(format.format(date));
+        format = new SimpleDateFormat("EEEE", Locale.US);
+        String week = format.format(date);
+        format = new SimpleDateFormat("dd");
+        String day = format.format(date);
+        curDate.set(week + ", " + day + "th");
     }
 }

@@ -89,14 +89,14 @@ public class TaskAdapter extends BaseAdapter {
             Task task = data.get(position);
             if (!task.getFinished()) {
                 viewHolder.title.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                viewHolder.title.setTextColor(context.getResources().getColor(R.color.delete_text));
+                viewHolder.title.setTextColor(context.getColor(R.color.delete_text));
                 task.setFinished(true);
                 if(task.getAlert()) {
                     alarmUtil.cancelNotificationById(task.getId());
                 }
             } else {
                 viewHolder.title.getPaint().setFlags(0);
-                viewHolder.title.setTextColor(context.getResources().getColor(R.color.btn_text_color));
+                viewHolder.title.setTextColor(context.getColor(R.color.btn_text_color));
                 task.setFinished(false);
                 if(task.getAlert()) {
                     alarmUtil.addNotification(task.getId(), task.getTitle(), task.getDate());

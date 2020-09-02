@@ -26,33 +26,31 @@ import com.ruyue.todolist.viewmodels.MainPageViewModel;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class MainPageActivity extends AppCompatActivity {
-    private MainPageViewModel mainPageViewModel;
-    private TaskAdapter taskAdapter;
     private  List<Task> taskList;
-    SharedPreferences sprfMain;
+    SharedPreferences sharedPreferencesMain;
     SharedPreferences.Editor editorMain;
-    private MyNotification myNotification;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mainPageViewModel = ViewModelProviders.of(this).get(MainPageViewModel.class);
+        MainPageViewModel mainPageViewModel = ViewModelProviders.of(this).get(MainPageViewModel.class);
         ActivityMainPageBinding binding = DataBindingUtil.setContentView(MainPageActivity.this, R.layout.activity_main_page);
         binding.setLifecycleOwner(this);
         binding.setMainPageViewModel(mainPageViewModel);
-        getSupportActionBar().setElevation(0);
-        myNotification = new MyNotification(this);
+        Objects.requireNonNull(getSupportActionBar()).setElevation(0);
 
         while (taskList == null) {
             taskList = mainPageViewModel.getTaskList();
         }
         Collections.sort(taskList);
+
         ListView listViewTask = findViewById(R.id.task_list_view);
-        taskAdapter = new TaskAdapter(MainPageActivity.this, taskList);
+        TaskAdapter taskAdapter = new TaskAdapter(MainPageActivity.this, taskList);
         listViewTask.setAdapter(taskAdapter);
 
         listViewTask.setOnItemClickListener((parent, view, position, id) -> {
@@ -72,11 +70,6 @@ public class MainPageActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         SubMenu addMenu = menu.addSubMenu(0, 1, 2, "overflow");
         addMenu.add(0, 2, 0, "ÍË³ö");
@@ -89,7 +82,7 @@ public class MainPageActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == 2) {
-            resetSprfMain();
+            resetShowPreMain();
             Intent intent = new Intent(MainPageActivity.this, LoginActivity.class);
             startActivity(intent);
             MainPageActivity.this.finish();
@@ -97,10 +90,16 @@ public class MainPageActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void resetSprfMain(){
-        sprfMain = PreferenceManager.getDefaultSharedPreferences(this);
-        editorMain = sprfMain.edit();
+    public void resetShowPreMain(){
+        sharedPreferencesMain = PreferenceManager.getDefaultSharedPreferences(this);
+        editorMain = sharedPreferencesMain.edit();
         editorMain.putBoolean("main",false);
         editorMain.apply();
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        moveTaskToBack(true);
     }
 }

@@ -24,6 +24,7 @@ import com.ruyue.todolist.models.Task;
 import com.ruyue.todolist.viewmodels.CreateTaskViewModel;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class CreateTaskActivity extends AppCompatActivity {
     private CreateTaskViewModel createTaskViewModel;
@@ -36,14 +37,17 @@ public class CreateTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         createTaskViewModel = ViewModelProviders.of(this).get(CreateTaskViewModel.class);
         ActivityCreateTaskBinding binding = DataBindingUtil.setContentView(CreateTaskActivity.this, R.layout.activity_create_task);
-
-        alarmUtil = new AlarmUtil();
         binding.setLifecycleOwner(this);
         binding.setCreateTaskViewModel(createTaskViewModel);
-        getSupportActionBar().setElevation(0);
-        Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
-        upArrow.setColorFilter(getResources().getColor(R.color.btn_text_color), PorterDuff.Mode.SRC_ATOP);
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+        alarmUtil = new AlarmUtil();
+
+        Objects.requireNonNull(getSupportActionBar()).setElevation(0);
+        Drawable upArrow = getDrawable(R.drawable.abc_ic_ab_back_material);
+        if(upArrow != null) {
+            upArrow.setColorFilter(getColor(R.color.btn_text_color), PorterDuff.Mode.SRC_ATOP);
+            getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        }
 
         EditText editTitle = findViewById(R.id.title);
         Button dateButton = findViewById(R.id.date);
@@ -55,7 +59,6 @@ public class CreateTaskActivity extends AppCompatActivity {
 
         createSuccessBtn.setOnClickListener(v -> {
             createTaskViewModel.insertToRoom(dateInsert);
-
             jumpToMainPageWithData();
         });
 
