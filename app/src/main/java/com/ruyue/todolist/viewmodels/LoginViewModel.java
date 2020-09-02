@@ -14,6 +14,7 @@ import androidx.lifecycle.AndroidViewModel;
 import com.google.gson.Gson;
 import com.ruyue.todolist.R;
 import com.ruyue.todolist.Utils.ConstUtils;
+import com.ruyue.todolist.Utils.MD5Util;
 import com.ruyue.todolist.models.User;
 
 
@@ -46,23 +47,17 @@ public class LoginViewModel extends AndroidViewModel {
     public ObservableField<String> getName() {
         return name;
     }
-
     public ObservableField<String> getPassword() {
         return password;
     }
 
     public int login() {
-        String inputName = name.get();
-        String inputPassword = password.get();
-        String md5Password = null;
-        try {
-            md5Password = getMD5(inputPassword);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        String md5Psd = null;
+        if(password.get() != null) {
+            md5Psd = MD5Util.md5Encrypt32Lower(password.get());
         }
-
-        if (inputName.equals(serviceUser.getName())) {
-            if(md5Password.equals(serviceUser.getPassword())) {
+        if (Objects.equals(name.get(), serviceUser.getName())) {
+            if(Objects.equals(md5Psd, serviceUser.getPassword())) {
                 return ConstUtils.SUCCESS;
             } else {
                 return ConstUtils.PASSWORD_ERROR;
@@ -71,6 +66,7 @@ public class LoginViewModel extends AndroidViewModel {
             return ConstUtils.NAME_NOT_EXIST;
         }
     }
+
     public Boolean isInputLegal(EditText inputView, String namePattern, String errorInfo) {
         if(inputView.getText().toString().matches(namePattern)) {
             return true;
@@ -80,13 +76,7 @@ public class LoginViewModel extends AndroidViewModel {
         }
     }
 
-    public static String getMD5(String str) throws NoSuchAlgorithmException {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(str.getBytes());
-            return new BigInteger(1, md.digest()).toString(16);
-    }
-
-    public void getUserInfo() {
+    public void getUserList() {
         final Request request = new Request.Builder().url(ConstUtils.URL).build();
         OkHttpClient okHttpClient = new OkHttpClient();
         Call call = okHttpClient.newCall(request);

@@ -1,8 +1,6 @@
 package com.ruyue.todolist.models;
 
 import android.annotation.SuppressLint;
-
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;

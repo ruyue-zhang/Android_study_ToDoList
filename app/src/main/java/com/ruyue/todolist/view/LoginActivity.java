@@ -5,14 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -32,7 +29,7 @@ import butterknife.OnTextChanged;
 
 public class LoginActivity extends AppCompatActivity {
     private LoginViewModel loginViewModel;
-    private SharedPreferences.Editor editorMain;
+    private SharedPreferences sharedPreferencesMain;
     private Boolean inputNameLegal = false;
     private Boolean inputPasswordLegal = false;
 
@@ -51,6 +48,9 @@ public class LoginActivity extends AppCompatActivity {
     @BindColor(R.color.btn_text_color)
     int btnDisableTextColor;
 
+    public LoginActivity() {
+    }
+
     @OnTextChanged(R.id.name)
     public void IsNameLegal() {
         inputNameLegal = loginViewModel.isInputLegal(editTextName, ConstUtils.NAME_PATTERN, ConstUtils.SET_NAME_ERROR);
@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         switch (loginViewModel.login()) {
             case ConstUtils.SUCCESS:
                 jumpToMainActivity();
-                editorMain.putBoolean("main", true).apply();
+                sharedPreferencesMain.edit().putBoolean(ConstUtils.IS_LOGIN, true).apply();
                 break;
             case ConstUtils.PASSWORD_ERROR:
                 Toast.makeText(getApplicationContext(), ConstUtils.ERROR_PSD, Toast.LENGTH_SHORT).show();
@@ -82,21 +82,21 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        ActivityLoginBinding binding = DataBindingUtil.setContentView(LoginActivity.this, R.layout.activity_login);
-        binding.setLifecycleOwner(this);
-        binding.setLoginViewModel(loginViewModel);
-        ButterKnife.bind(this);
-        isLogin();
-        loginViewModel.getUserInfo();
+        if(isLogin()) {
+            jumpToMainActivity();
+        } else {
+            loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+            ActivityLoginBinding binding = DataBindingUtil.setContentView(LoginActivity.this, R.layout.activity_login);
+            binding.setLifecycleOwner(this);
+            binding.setLoginViewModel(loginViewModel);
+            ButterKnife.bind(this);
+            loginViewModel.getUserList();
+        }
     }
 
-    private void isLogin() {
-        SharedPreferences sharedPreferencesMain = PreferenceManager.getDefaultSharedPreferences(this);
-        editorMain = sharedPreferencesMain.edit();
-        if(sharedPreferencesMain.getBoolean("main",false)) {
-            jumpToMainActivity();
-        }
+    private Boolean isLogin() {
+        sharedPreferencesMain = this.getSharedPreferences(ConstUtils.IS_LOGIN, Context.MODE_PRIVATE);
+        return sharedPreferencesMain.getBoolean(ConstUtils.IS_LOGIN,false);
     }
 
     private void jumpToMainActivity() {

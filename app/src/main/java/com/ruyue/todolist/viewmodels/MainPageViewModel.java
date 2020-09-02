@@ -11,6 +11,7 @@ import com.ruyue.todolist.models.LocalDataSource;
 import com.ruyue.todolist.models.Task;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -53,19 +54,15 @@ public class MainPageViewModel extends AndroidViewModel {
     }
 
     public List<Task> getTaskList() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                taskList = localDataSource.taskDao().getTaskList();
-            }
+        new Thread(() -> {
+            taskList = localDataSource.taskDao().getTaskList();
+            Collections.sort(taskList);
         }).start();
-        if (taskList != null) {
-            displayHeadInfo();
-        }
         return taskList;
+
     }
 
-    private void displayHeadInfo() {
+    public void displayHeadInfo(List<Task> taskList) {
         taskCount.set(taskList.size() + "¸öÈÎÎñ");
 
         long time = System.currentTimeMillis();
@@ -77,6 +74,18 @@ public class MainPageViewModel extends AndroidViewModel {
         String week = format.format(date);
         format = new SimpleDateFormat("dd");
         String day = format.format(date);
-        curDate.set(week + ", " + day + "th");
+        switch (day) {
+            case "1":
+                curDate.set(week + ", First");
+                break;
+            case "2":
+                curDate.set(week + ", Second");
+                break;
+            case "3":
+                curDate.set(week + ", Third");
+                break;
+            default:
+                curDate.set(week + ", " + day + "th");
+        }
     }
 }
