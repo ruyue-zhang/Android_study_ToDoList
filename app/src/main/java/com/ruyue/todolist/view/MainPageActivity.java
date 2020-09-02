@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
@@ -25,6 +26,7 @@ import com.ruyue.todolist.databinding.ActivityMainPageBinding;
 import com.ruyue.todolist.models.Task;
 import com.ruyue.todolist.viewmodels.MainPageViewModel;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -59,6 +61,7 @@ public class MainPageActivity extends AppCompatActivity {
         while(taskList == null) {
             taskList = mainPageViewModel.getTaskList();
         }
+        mainPageViewModel.displayHeadInfo(taskList);
         addInListView();
     }
 
@@ -68,15 +71,10 @@ public class MainPageActivity extends AppCompatActivity {
         MainPageActivity.this.finish();
     }
 
-    @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
-    }
-
     private void jumpToCreateTask() {
         Intent intent = new Intent(MainPageActivity.this, CreateTaskActivity.class);
         intent.putExtra(ConstUtils.ADD_OR_CHANGE, false);
-        startActivityForResult(intent, ConstUtils.ADD_REQUEST_CODE);
+        startActivityForResult(intent, ConstUtils.CHANGE_REQUEST_CODE);
     }
 
     private void jumpToChangeTask(String value) {
@@ -87,8 +85,6 @@ public class MainPageActivity extends AppCompatActivity {
     }
 
     private void addInListView() {
-        mainPageViewModel.displayHeadInfo(taskList);
-
         TaskAdapter taskAdapter = new TaskAdapter(MainPageActivity.this, taskList);
         listViewTask.setAdapter(taskAdapter);
         listViewTask.setOnItemClickListener((parent, view, position, id) -> {
@@ -96,15 +92,22 @@ public class MainPageActivity extends AppCompatActivity {
             Task task = (Task) adapter.getItem(position);
             jumpToChangeTask(new Gson().toJson(task));
         });
+
+        mainPageViewModel.getLiveDataTask().observe(this, new Observer<List<Task>>()
+        {
+            @Override
+            public void onChanged(List<Task> tasks)
+            {
+                taskList.clear();
+                Collections.sort(tasks);
+                taskList.addAll(tasks);
+                taskAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        if(requestCode == ConstUtils.ADD_REQUEST_CODE && resultCode == ConstUtils.ADD_RESULT_CODE) {
-//            //Ë¢ÐÂ½çÃæ
-//        } else if(requestCode == ConstUtils.CHANGE_REQUEST_CODE && resultCode == ConstUtils.CHANGE_RESULT_CODE) {
-//
-//        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 

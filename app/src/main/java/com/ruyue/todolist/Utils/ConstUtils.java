@@ -12,10 +12,8 @@ public class ConstUtils {
     public static final String SET_PSD_ERROR = "密码长度必须是6 ~ 18位字符";
     public static final String URL = "https://twc-android-bootcamp.github.io/fake-data/data/user.json";
     public static final String IS_LOGIN = "login";
-    public static final int ADD_REQUEST_CODE = 0;
-    public static final int ADD_RESULT_CODE = 1;
-    public static final int CHANGE_REQUEST_CODE = 2;
-    public static final int CHANGE_RESULT_CODE = 3;
+    public static final int CHANGE_REQUEST_CODE = 1;
+    public static final int CHANGE_RESULT_CODE = 2;
     public static final String CHANGE_TASK_KEY= "changeTask";
     public static final String ADD_OR_CHANGE = "flag";
 }

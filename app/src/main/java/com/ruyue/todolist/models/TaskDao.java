@@ -24,6 +24,9 @@ public interface TaskDao {
     @Query("SELECT * FROM task")
     List<Task> getTaskList();
 
+    @Query("SELECT * FROM task")
+    LiveData<List<Task>> getLiveTaskList();
+
     @Query("SELECT * FROM task WHERE title = :title AND date = :date")
     Task getTaskByTitleAndDate(String title, String date);
 }

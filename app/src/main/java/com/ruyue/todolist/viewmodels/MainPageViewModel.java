@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.ruyue.todolist.models.LocalDataSource;
 import com.ruyue.todolist.models.Task;
@@ -22,10 +23,17 @@ public class MainPageViewModel extends AndroidViewModel {
     private ObservableField<String> taskCount = new ObservableField<>();
     private LocalDataSource localDataSource;
     private List<Task> taskList;
+    private LiveData<List<Task>> liveTaskList;
 
     public MainPageViewModel(@NonNull Application application) {
         super(application);
         localDataSource = LocalDataSource.getInstance(application);
+        liveTaskList = localDataSource.taskDao().getLiveTaskList();
+    }
+
+    public LiveData<List<Task>> getLiveDataTask()
+    {
+        return liveTaskList;
     }
 
     public ObservableField<String> getCurDate() {

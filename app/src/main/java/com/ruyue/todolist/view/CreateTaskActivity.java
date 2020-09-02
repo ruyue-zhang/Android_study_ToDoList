@@ -80,32 +80,17 @@ public class CreateTaskActivity extends AppCompatActivity {
         ActivityCreateTaskBinding binding = DataBindingUtil.setContentView(CreateTaskActivity.this, R.layout.activity_create_task);
         binding.setLifecycleOwner(this);
         binding.setCreateTaskViewModel(createTaskViewModel);
+        Objects.requireNonNull(getSupportActionBar()).setElevation(0);
         ButterKnife.bind(this);
 
         alarmUtil = new AlarmUtil();
-
-        Objects.requireNonNull(getSupportActionBar()).setElevation(0);
-
-        Intent intent = getIntent();
-        if(intent.getBooleanExtra(ConstUtils.ADD_OR_CHANGE, true)) {
-            String changeTaskString = intent.getStringExtra(ConstUtils.CHANGE_TASK_KEY);
-            changeTask = new Gson().fromJson(changeTaskString, Task.class);
-            createTaskViewModel.initInterface(changeTask);
-            CreateTaskViewModel.isChange = true;
-            isDateNotEmpty = true;
-            deleteTaskBtn.setEnabled(true);
-            createSuccessBtn.setEnabled(true);
-            deleteTaskBtn.setVisibility(View.VISIBLE);
-        } else {
-            CreateTaskViewModel.isChange = false;
-            deleteTaskBtn.setEnabled(false);
-            deleteTaskBtn.setVisibility(View.INVISIBLE);
-        }
+        changeOrCreateManage();
     }
 
     public void jumpToMainPageWithData() {
         Intent intent = new Intent(CreateTaskActivity.this, MainPageActivity.class);
-        startActivity(intent);
+        setResult(ConstUtils.CHANGE_RESULT_CODE, intent);
+        finish();
     }
 
     private void openCalendarDialog() {
@@ -136,6 +121,24 @@ public class CreateTaskActivity extends AppCompatActivity {
             createSuccessBtn.setEnabled(true);
         } else {
             createSuccessBtn.setEnabled(false);
+        }
+    }
+
+    private void changeOrCreateManage() {
+        Intent intent = getIntent();
+        if(intent.getBooleanExtra(ConstUtils.ADD_OR_CHANGE, true)) {
+            String changeTaskString = intent.getStringExtra(ConstUtils.CHANGE_TASK_KEY);
+            changeTask = new Gson().fromJson(changeTaskString, Task.class);
+            createTaskViewModel.initInterface(changeTask);
+            CreateTaskViewModel.isChange = true;
+            isDateNotEmpty = true;
+            deleteTaskBtn.setEnabled(true);
+            createSuccessBtn.setEnabled(true);
+            deleteTaskBtn.setVisibility(View.VISIBLE);
+        } else {
+            CreateTaskViewModel.isChange = false;
+            deleteTaskBtn.setEnabled(false);
+            deleteTaskBtn.setVisibility(View.INVISIBLE);
         }
     }
 }
