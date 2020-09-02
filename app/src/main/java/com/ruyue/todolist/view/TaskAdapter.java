@@ -2,13 +2,11 @@ package com.ruyue.todolist.view;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.ruyue.todolist.R;
@@ -75,10 +73,10 @@ public class TaskAdapter extends BaseAdapter {
 
         if(data.get(position).getFinished()) {
             viewHolder.title.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            viewHolder.title.setTextColor(context.getResources().getColor(R.color.delete_text));
+            viewHolder.title.setTextColor(context.getColor(R.color.delete_text));
         } else {
             viewHolder.title.getPaint().setFlags(0);
-            viewHolder.title.setTextColor(context.getResources().getColor(R.color.btn_text_color));
+            viewHolder.title.setTextColor(context.getColor(R.color.btn_text_color));
         }
 
         String[] dateStrList = data.get(position).getDate().split("-");

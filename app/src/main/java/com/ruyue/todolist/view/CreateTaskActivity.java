@@ -6,8 +6,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +25,6 @@ import com.ruyue.todolist.viewmodels.CreateTaskViewModel;
 import java.util.Calendar;
 import java.util.Objects;
 
-import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -49,8 +46,6 @@ public class CreateTaskActivity extends AppCompatActivity {
     FloatingActionButton createSuccessBtn;
     @BindView(R.id.delete_task)
     FloatingActionButton deleteTaskBtn;
-    @BindDrawable(R.drawable.abc_ic_ab_back_material)
-    Drawable backBtn;
 
     @OnClick(R.id.date)
     public void onDateClick() {
@@ -90,11 +85,6 @@ public class CreateTaskActivity extends AppCompatActivity {
         alarmUtil = new AlarmUtil();
 
         Objects.requireNonNull(getSupportActionBar()).setElevation(0);
-        Drawable upArrow = backBtn;
-        if(upArrow != null) {
-            upArrow.setColorFilter(getColor(R.color.btn_text_color), PorterDuff.Mode.SRC_ATOP);
-            getSupportActionBar().setHomeAsUpIndicator(upArrow);
-        }
 
         Intent intent = getIntent();
         if(intent.getBooleanExtra(ConstUtils.ADD_OR_CHANGE, true)) {

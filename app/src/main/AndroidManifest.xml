@@ -25,6 +25,7 @@
         <activity
             android:name=".view.CreateTaskActivity"
             android:label=""
+            android:theme="@style/style_title_bar_normal"
             android:parentActivityName=".view.MainPageActivity" />
         <activity
             android:name=".view.MainPageActivity"

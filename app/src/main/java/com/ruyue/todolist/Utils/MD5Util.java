@@ -1,6 +1,6 @@
 package com.ruyue.todolist.Utils;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -8,11 +8,9 @@ public class MD5Util {
     public static String md5Encrypt32Lower(String string) {
         byte[] hash;
         try {
-            hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
+            hash = MessageDigest.getInstance("MD5").digest(string.getBytes(StandardCharsets.UTF_8));
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Huh, MD5 should be supported?", e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Huh, UTF-8 should be supported?", e);
         }
 
         StringBuilder hex = new StringBuilder(hash.length * 2);

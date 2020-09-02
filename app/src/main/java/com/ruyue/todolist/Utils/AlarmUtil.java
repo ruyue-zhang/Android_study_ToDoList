@@ -37,7 +37,7 @@ public class AlarmUtil {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if(hitTime.getTime() > System.currentTimeMillis()) {
+        if(hitTime.getTime()  > System.currentTimeMillis()) {
             Intent intent = new Intent(context, AlarmReceiver.class);
             intent.putExtra("title", title);
             intent.putExtra("id",id);
