@@ -29,7 +29,7 @@ public class AlarmUtil {
     public void addNotification(int id, String title, String date) {
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String hitTimeStr = date + " 00:28:00";
+        String hitTimeStr = date + " 06:00:00";
         Date hitTime = null;
         try {
             hitTime = format.parse(hitTimeStr);

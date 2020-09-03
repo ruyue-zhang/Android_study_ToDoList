@@ -48,7 +48,8 @@
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/is_alert"
                 android:textColor="@color/btn_text_color"
-                android:text="@string/hit"/>
+                android:text="@string/hit"
+                tools:ignore="RelativeOverlap" />
 
             <Switch
                 android:id="@+id/is_alert"
