@@ -21,10 +21,6 @@ public class Task implements Comparable<Task> {
     private Boolean isAlert;
     private String date;
 
-    @Ignore
-    public Task() {
-    }
-
     public Task(int id, String title, String description, Boolean isFinished, Boolean isAlert, String date) {
         this.id = id;
         this.title = title;
@@ -63,10 +59,6 @@ public class Task implements Comparable<Task> {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Boolean getFinished() {
         return isFinished;
     }
@@ -77,10 +69,6 @@ public class Task implements Comparable<Task> {
 
     public Boolean getAlert() {
         return isAlert;
-    }
-
-    public void setAlert(Boolean alert) {
-        isAlert = alert;
     }
 
     public String getDate() {
@@ -117,7 +105,9 @@ public class Task implements Comparable<Task> {
             try {
                 date1 = simpleDateFormat.parse(this.getDate());
                 date2 = simpleDateFormat.parse(task.getDate());
-                compareTo = date1.compareTo(date2);
+                if (date1 != null) {
+                    compareTo = date1.compareTo(date2);
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }

@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
@@ -93,16 +92,11 @@ public class MainPageActivity extends AppCompatActivity {
             jumpToChangeTask(new Gson().toJson(task));
         });
 
-        mainPageViewModel.getLiveDataTask().observe(this, new Observer<List<Task>>()
-        {
-            @Override
-            public void onChanged(List<Task> tasks)
-            {
-                taskList.clear();
-                Collections.sort(tasks);
-                taskList.addAll(tasks);
-                taskAdapter.notifyDataSetChanged();
-            }
+        mainPageViewModel.getLiveDataTask().observe(this, tasks -> {
+            taskList.clear();
+            Collections.sort(tasks);
+            taskList.addAll(tasks);
+            taskAdapter.notifyDataSetChanged();
         });
     }
 

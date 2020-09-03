@@ -8,7 +8,6 @@ import android.content.Intent;
 
 import com.ruyue.todolist.MyApplication;
 import com.ruyue.todolist.view.AlarmReceiver;
-import com.ruyue.todolist.view.MyNotification;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,7 +29,7 @@ public class AlarmUtil {
     public void addNotification(int id, String title, String date) {
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String hitTimeStr = date + " 08:35:30";
+        String hitTimeStr = date + " 00:28:00";
         Date hitTime = null;
         try {
             hitTime = format.parse(hitTimeStr);

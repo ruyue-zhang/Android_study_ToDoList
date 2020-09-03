@@ -1,4 +1,4 @@
-package com.ruyue.todolist.view;
+package com.ruyue.todolist.Utils;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -12,6 +12,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.ruyue.todolist.R;
+import com.ruyue.todolist.view.MainPageActivity;
 
 public class MyNotification {
     private NotificationManagerCompat notificationManager;
