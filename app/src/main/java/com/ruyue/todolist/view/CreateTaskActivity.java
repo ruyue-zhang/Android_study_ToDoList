@@ -48,6 +48,10 @@ public class CreateTaskActivity extends AppCompatActivity {
     FloatingActionButton createSuccessBtn;
     @BindView(R.id.delete_task)
     FloatingActionButton deleteTaskBtn;
+    @BindColor(R.color.sys_blue)
+    int systemBlue;
+    @BindColor(R.color.btn_text_color)
+    int grayText;
 
     @OnClick(R.id.date)
     public void onDateClick() {
@@ -108,6 +112,7 @@ public class CreateTaskActivity extends AppCompatActivity {
         CalendarView calendarView1 = customView.findViewById(R.id.calendarView);
         calendarView1.setOnDateChangeListener((calendarView, year, month, day) -> {
             isDateNotEmpty = true;
+            dateButton.setTextColor(systemBlue);
             changeSaveBtnStatus();
             dateInsert = year + "-" + (month + 1) + "-" + day;
             String date = year + "Äê" + (month +1) + "ÔÂ" + day + "ÈÕ";
@@ -134,12 +139,14 @@ public class CreateTaskActivity extends AppCompatActivity {
             createTaskViewModel.initInterface(changeTask);
             CreateTaskViewModel.isChange = true;
             isDateNotEmpty = true;
+            dateButton.setTextColor(systemBlue);
             deleteTaskBtn.setEnabled(true);
             createSuccessBtn.setEnabled(true);
             deleteTaskBtn.setVisibility(View.VISIBLE);
         } else {
             CreateTaskViewModel.isChange = false;
             deleteTaskBtn.setEnabled(false);
+            dateButton.setTextColor(grayText);
             deleteTaskBtn.setVisibility(View.INVISIBLE);
         }
     }
